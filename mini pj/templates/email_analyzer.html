@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}Email Threat Analyzer - PHISHGUARD{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px;">
+  <div class="container container-narrow">
+    <div class="text-center" style="margin-bottom: 40px;">
+      <div class="section-tag mx-auto">Social Engineering Inspection</div>
+      <h1 class="section-title">Email Threat Analyzer</h1>
+      <p class="section-subtitle mx-auto">
+        Detect deceptive sender spoofing, artificial panic deadlines, sensitive credential requests, and hidden phishing links embedded in email communications.
+      </p>
+    </div>
+
+    <!-- Analyzer Form Card -->
+    <div class="checks-card" style="padding: 36px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+        <span style="font-size: 0.88rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em;">
+          Load Inspection Sample:
+        </span>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+          <button type="button" class="quick-chip load-sample-btn" data-sample="urgent_bank">
+            ⚠ Urgent Bank Suspension
+          </button>
+          <button type="button" class="quick-chip load-sample-btn" data-sample="ceo_giftcard">
+            ⚠ CEO Gift Card Scam
+          </button>
+          <button type="button" class="quick-chip load-sample-btn" data-sample="safe_collaboration">
+            ✓ Safe GitHub Notification
+          </button>
+        </div>
+      </div>
+
+      <form action="{{ url_for('email_view') }}" method="POST">
+        <!-- Sender Address Field -->
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 700; font-size: 0.92rem; margin-bottom: 8px; color: var(--primary);">
+            Sender Header / Address:
+          </label>
+          <input type="text" name="sender" id="emailSenderInput" class="scanner-input-field"
+                 placeholder="e.g. Security Team &lt;service@security-update-92.xyz&gt;"
+                 style="width: 100%; padding: 12px 18px; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); background: var(--bg-light);" required>
+        </div>
+
+        <!-- Subject Line Field -->
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-weight: 700; font-size: 0.92rem; margin-bottom: 8px; color: var(--primary);">
+            Email Subject Line:
+          </label>
+          <input type="text" name="subject" id="emailSubjectInput" class="scanner-input-field"
+                 placeholder="e.g. URGENT: Unauthorized login attempt detected"
+                 style="width: 100%; padding: 12px 18px; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); background: var(--bg-light);" required>
+        </div>
+
+        <!-- Body Snippet Field -->
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-weight: 700; font-size: 0.92rem; margin-bottom: 8px; color: var(--primary);">
+            Email Body Content:
+          </label>
+          <textarea name="body" id="emailBodyInput" rows="7" class="scanner-input-field"
+                    placeholder="Paste the full body text of the message including any hyperlinks..."
+                    style="width: 100%; padding: 14px 18px; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); background: var(--bg-light); line-height: 1.6; font-family: inherit;" required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-accent btn-lg" style="width: 100%;">
+          Analyze Email Threat Level
+        </button>
+      </form>
+    </div>
+
+    <!-- Educational Checklist -->
+    <div style="margin-top: 48px;">
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--primary); margin-bottom: 16px;">Core Threat Vectors Evaluated:</h3>
+      <div class="features-grid" style="margin-top: 0;">
+        <div class="feature-card" style="padding: 24px;">
+          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 6px;">Sender Domain Spoofing</h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">Detects corporate brand impersonation dispatched from consumer or foreign domains.</p>
+        </div>
+        <div class="feature-card" style="padding: 24px;">
+          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 6px;">Coercive Psychological Urgency</h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">Identifies synthetic deadlines, intimidation threats, and panic triggers.</p>
+        </div>
+        <div class="feature-card" style="padding: 24px;">
+          <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 6px;">Correlated Hyperlink Telemetry</h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">Extracts and cross-analyzes embedded links against URL heuristic rules.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/email_analyzer.js') }}"></script>
+{% endblock %}

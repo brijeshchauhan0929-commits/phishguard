@@ -1,0 +1,740 @@
+/* ==========================================================================
+   PHISHGUARD - Modular UI Components Stylesheet
+   Radial Risk Gauge, Indicator Accordions, Quiz Engine, Awareness Pipeline
+   ========================================================================== */
+
+/* 1. Circular / Radial Risk Gauge */
+.risk-meter-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 220px;
+  height: 220px;
+  margin: 0 auto;
+}
+
+.circular-chart {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 220px;
+  transform: rotate(-90deg);
+}
+
+.circle-bg {
+  fill: none;
+  stroke: #E2E8F0;
+  stroke-width: 3.2;
+}
+
+.circle-arc {
+  fill: none;
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s ease-out;
+}
+
+.circle-arc.stroke-success { stroke: #10B981; }
+.circle-arc.stroke-warning { stroke: #F59E0B; }
+.circle-arc.stroke-danger { stroke: #EF4444; }
+
+.risk-meter-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gauge-score-value {
+  font-size: 3.2rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--primary);
+}
+
+.gauge-score-max {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.gauge-level-badge {
+  margin-top: 8px;
+}
+
+/* 2. Security Checks & Potential Concerns Cards */
+.checks-grid-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 32px;
+}
+
+.checks-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  box-shadow: var(--shadow-sm);
+}
+
+.checks-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.checks-card-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.check-item-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  margin-bottom: 10px;
+  background: var(--bg-light);
+  border: 1px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.check-item-row:hover {
+  background: #fff;
+  border-color: var(--border-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.check-item-row.passed {
+  border-left: 4px solid var(--success);
+}
+
+.check-item-row.concern {
+  border-left: 4px solid var(--danger);
+  background: #FEF2F2;
+}
+
+.check-item-row.warning {
+  border-left: 4px solid var(--warning);
+  background: #FFFBEB;
+}
+
+.check-icon-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.check-icon-circle.pass { background: #ECFDF5; color: var(--success); }
+.check-icon-circle.warn { background: #FEF3C7; color: var(--warning); }
+.check-icon-circle.danger { background: #FEE2E2; color: var(--danger); }
+
+.check-details {
+  flex-grow: 1;
+}
+
+.check-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.check-description {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* 3. Expandable Explanation Accordion */
+.accordion-wrapper {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  margin-top: 32px;
+}
+
+.accordion-title-bar {
+  padding: 24px 32px;
+  background: var(--bg-light-muted);
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.accordion-title-bar h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--border-light);
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-header {
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: #fff;
+  transition: background 0.2s;
+  user-select: none;
+}
+
+.accordion-header:hover {
+  background: var(--bg-light);
+}
+
+.accordion-header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.indicator-title-text {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.accordion-arrow {
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
+  transition: transform 0.25s ease;
+}
+
+.accordion-item.active .accordion-arrow {
+  transform: rotate(180deg);
+}
+
+.accordion-content {
+  display: none;
+  padding: 0 32px 24px 64px;
+  background: #fff;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.accordion-item.active .accordion-content {
+  display: block;
+}
+
+.rationale-callout {
+  margin-top: 12px;
+  padding: 14px 18px;
+  background: rgba(2, 132, 199, 0.06);
+  border-left: 3px solid var(--primary-accent);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  color: #0369A1;
+}
+
+/* 4. Safety Recommendation Box */
+.recommendation-card {
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  margin-top: 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.recommendation-card.danger {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  color: #991B1B;
+}
+
+.recommendation-card.warning {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  color: #92400E;
+}
+
+.recommendation-card.success {
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #065F46;
+}
+
+.recommendation-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.recommendation-card.danger .recommendation-icon { background: #FEE2E2; color: #EF4444; }
+.recommendation-card.warning .recommendation-icon { background: #FEF3C7; color: #F59E0B; }
+.recommendation-card.success .recommendation-icon { background: #D1FAE5; color: #10B981; }
+
+.recommendation-content h4 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.recommendation-content p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* 5. Interactive Quiz Styles */
+.quiz-container {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.quiz-card {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 44px;
+  box-shadow: var(--shadow-xl);
+  position: relative;
+}
+
+.quiz-progress-bar-container {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-light-muted);
+  border-radius: var(--radius-full);
+  margin-bottom: 32px;
+  overflow: hidden;
+}
+
+.quiz-progress-fill {
+  height: 100%;
+  background: var(--blue-gradient);
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.quiz-scenario-box {
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 28px;
+}
+
+.quiz-category-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--primary-accent);
+  margin-bottom: 8px;
+}
+
+.quiz-question-text {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--primary);
+  line-height: 1.4;
+}
+
+.quiz-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.quiz-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 18px 24px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-light);
+  background: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  width: 100%;
+}
+
+.quiz-option-btn:hover:not(:disabled) {
+  border-color: var(--primary-accent);
+  background: var(--bg-light);
+  transform: translateX(4px);
+}
+
+.option-letter-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-light-muted);
+  color: var(--text-muted);
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.quiz-option-btn.selected {
+  border-color: var(--primary-accent);
+  background: rgba(2, 132, 199, 0.05);
+}
+
+.quiz-option-btn.selected .option-letter-badge {
+  background: var(--primary-accent);
+  color: #fff;
+}
+
+.quiz-option-btn.correct {
+  border-color: var(--success);
+  background: #ECFDF5;
+  color: #065F46;
+}
+
+.quiz-option-btn.correct .option-letter-badge {
+  background: var(--success);
+  color: #fff;
+}
+
+.quiz-option-btn.incorrect {
+  border-color: var(--danger);
+  background: #FEF2F2;
+  color: #991B1B;
+}
+
+.quiz-option-btn.incorrect .option-letter-badge {
+  background: var(--danger);
+  color: #fff;
+}
+
+.quiz-explanation-box {
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-light-muted);
+  border: 1px solid var(--border-light);
+  margin-bottom: 28px;
+  animation: fadeIn 0.3s ease;
+}
+
+.quiz-explanation-box.correct-feedback {
+  background: #ECFDF5;
+  border-color: #A7F3D0;
+  color: #065F46;
+}
+
+.quiz-explanation-box.incorrect-feedback {
+  background: #FEF2F2;
+  border-color: #FECACA;
+  color: #991B1B;
+}
+
+/* Certificate Component */
+.certificate-container {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border: 3px solid #06B6D4;
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  color: #fff;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 40px rgba(6, 182, 212, 0.2);
+  margin: 32px 0;
+}
+
+.certificate-header {
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cyan-accent);
+  margin-bottom: 12px;
+}
+
+.certificate-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #94A3B8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.certificate-name {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--cyan-accent);
+  border-bottom: 2px dashed rgba(255, 255, 255, 0.2);
+  display: inline-block;
+  padding: 0 32px 8px 32px;
+  margin-bottom: 20px;
+}
+
+/* 6. Awareness Learning Pipeline Tabs */
+.learning-pipeline-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 48px;
+  flex-wrap: wrap;
+}
+
+.pipeline-step-tab {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  background: #fff;
+  border: 1px solid var(--border-light);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pipeline-step-tab:hover {
+  border-color: var(--primary-accent);
+  color: var(--primary);
+}
+
+.pipeline-step-tab.active {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* Do's and Don'ts Cards */
+.dos-donts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 32px;
+}
+
+.dos-card {
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  border-radius: var(--radius-xl);
+  padding: 32px;
+}
+
+.donts-card {
+  background: #FEF2F2;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-xl);
+  padding: 32px;
+}
+
+.dos-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #065F46;
+  margin-bottom: 20px;
+}
+
+.donts-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #991B1B;
+  margin-bottom: 20px;
+}
+
+.practice-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.practice-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 0.94rem;
+  line-height: 1.5;
+}
+
+.practice-list.dos-list li { color: #064E3B; }
+.practice-list.donts-list li { color: #7F1D1D; }
+
+/* Responsive adjustments for All Devices, Android & Tablets */
+.certificate-meta-row {
+  display: flex;
+  justify-content: space-around;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+  font-size: 0.85rem;
+  color: #94A3B8;
+  gap: 16px;
+}
+
+@media (max-width: 860px) {
+  .checks-grid-two-column, .dos-donts-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .checks-card {
+    padding: 26px 20px;
+  }
+  .quiz-card {
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .checks-card {
+    padding: 22px 16px;
+    border-radius: var(--radius-lg);
+  }
+  .checks-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+  }
+  .checks-card-title {
+    font-size: 1.05rem;
+  }
+  .check-item-row {
+    padding: 12px;
+    gap: 10px;
+  }
+  .check-icon-circle {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+  .check-details .check-name {
+    font-size: 0.92rem;
+  }
+  .check-details .check-description {
+    font-size: 0.82rem;
+  }
+  .recommendation-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+  }
+  .accordion-header {
+    padding: 16px 18px;
+  }
+  .accordion-content {
+    padding: 18px;
+  }
+  .indicator-title-text {
+    font-size: 0.92rem;
+  }
+  .quiz-scenario-box {
+    padding: 18px 14px;
+  }
+  .quiz-question-text {
+    font-size: 1.1rem;
+  }
+  .quiz-option-btn {
+    padding: 14px 16px;
+    font-size: 0.92rem;
+  }
+  .certificate-container {
+    padding: 28px 16px;
+    border-width: 2px;
+    margin: 20px 0;
+  }
+  .certificate-title {
+    font-size: 1.45rem;
+    margin-bottom: 16px;
+  }
+  .certificate-name {
+    font-size: 1.35rem;
+    padding: 0 12px 6px 12px;
+    margin-bottom: 14px;
+  }
+  .certificate-meta-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+  .learning-pipeline-nav {
+    gap: 8px;
+    margin-bottom: 32px;
+  }
+  .pipeline-step-tab {
+    padding: 10px 18px;
+    font-size: 0.88rem;
+    width: 100%;
+    justify-content: center;
+  }
+  .dos-card, .donts-card {
+    padding: 22px 16px;
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (max-width: 400px) {
+  .risk-meter-wrapper {
+    width: 180px;
+    height: 180px;
+  }
+  .circular-chart {
+    max-height: 180px;
+  }
+  .gauge-score-value {
+    font-size: 2.6rem;
+  }
+  .quiz-option-btn {
+    padding: 12px 14px;
+    font-size: 0.88rem;
+  }
+  .checks-card {
+    padding: 18px 12px;
+  }
+}

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}URL Phishing Scanner - PHISHGUARD{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px;">
+  <div class="container container-narrow">
+    <div class="text-center" style="margin-bottom: 40px;">
+      <div class="section-tag mx-auto">Lexical &amp; Structural Telemetry</div>
+      <h1 class="section-title">URL Phishing Scanner</h1>
+      <p class="section-subtitle mx-auto">
+        Analyze web endpoints against 14 distinct security heuristics including brand spoofing, typosquatting, raw IP resolution, and deceptive redirection syntax.
+      </p>
+    </div>
+
+    <!-- Scanner Form Card -->
+    <div class="scanner-preview-card" style="margin-top: 0;">
+      <form action="{{ url_for('scanner_view') }}" method="POST">
+        <div class="scanner-input-group">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" name="url" id="scannerUrlInput" class="scanner-input-field" placeholder="Enter full URL (e.g. https://secure-login.bank-update.xyz)" value="{{ request.args.get('url', '') }}" required autofocus>
+          <button type="submit" class="btn btn-accent btn-lg">
+            Inspect URL
+          </button>
+        </div>
+      </form>
+
+      <!-- Preset Sample Chips -->
+      <div class="quick-sample-chips" style="margin-bottom: 0;">
+        <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin-right: 4px;">Quick Test:</span>
+        <button type="button" class="quick-chip" data-url="https://accounts.google.com/signin/v2/identifier">✓ Google Sign-in (Safe)</button>
+        <button type="button" class="quick-chip" data-url="http://paypa1-security-verification.xyz/login.php?user=alert">⚠ PayPal Typosquat (Phishing)</button>
+        <button type="button" class="quick-chip" data-url="https://bit.ly/3x8Qz9A-claim-reward">⚡ Bit.ly Shortener (Suspicious)</button>
+        <button type="button" class="quick-chip" data-url="http://192.168.1.100/secure-update/bank">⚠ Raw IP Hostname (High Risk)</button>
+        <button type="button" class="quick-chip" data-url="http://apple-id-verify.support-apple.club/recovery">⚠ Subdomain Tunneling (Phishing)</button>
+      </div>
+    </div>
+
+    <!-- Explanatory Heuristics Grid -->
+    <div style="margin-top: 56px;">
+      <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--primary); margin-bottom: 20px;">What We Inspect:</h3>
+      <div class="features-grid" style="margin-top: 0;">
+        <div class="feature-card" style="padding: 24px;">
+          <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px;">Protocol &amp; TLS Encryption</h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">Confirms HTTPS transport encryption and flags unencrypted plain HTTP.</p>
+        </div>
+        <div class="feature-card" style="padding: 24px;">
+          <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px;">Brand Impersonation</h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">Detects unauthorized trademark lookalikes (PayPal, Google, Apple, Microsoft, Chase).</p>
+        </div>
+        <div class="feature-card" style="padding: 24px;">
+          <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 6px;">Domain Obfuscation</h4>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">Identifies raw IP addresses, credential syntax (@), and excessive subdomain tunneling.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In - PHISHGUARD{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px; padding-bottom: 90px;">
+  <div class="container container-narrow" style="max-width: 500px;">
+    
+    <div class="checks-card" style="padding: 40px;">
+      <div class="text-center" style="margin-bottom: 28px;">
+        <div class="shield-icon-badge mx-auto" style="margin-bottom: 16px;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+        </div>
+        <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary); margin-bottom: 6px;">
+          Welcome Back
+        </h2>
+        <p style="font-size: 0.92rem; color: var(--text-muted);">
+          Sign in to access your PhishGuard security dashboard and scan logs.
+        </p>
+      </div>
+
+      <!-- Quick Demo Auto-Fill Box -->
+      <div style="background: rgba(2, 132, 199, 0.08); border: 1px solid rgba(2, 132, 199, 0.25); border-radius: var(--radius-md); padding: 14px; margin-bottom: 24px;">
+        <div style="font-size: 0.8rem; font-weight: 700; color: var(--primary-accent); text-transform: uppercase; margin-bottom: 4px;">
+          Demo Evaluation Credentials:
+        </div>
+        <div style="font-size: 0.85rem; color: var(--text-main);">
+          Email: <code>brijesh@phishguard.local</code><br>
+          Password: <code>password123</code>
+        </div>
+        <button type="button" id="fillDemoCredsBtn" class="btn btn-outline btn-sm" style="margin-top: 10px; width: 100%; font-size: 0.8rem; padding: 5px;">
+          ⚡ Auto-Fill Demo Credentials
+        </button>
+      </div>
+
+      <form action="{{ url_for('login') }}" method="POST">
+        <div style="margin-bottom: 18px;">
+          <label style="display: block; font-size: 0.88rem; font-weight: 700; margin-bottom: 6px; color: var(--primary);">
+            Email Address:
+          </label>
+          <input type="email" name="email" id="loginEmail" class="scanner-input-field"
+                 placeholder="name@example.com"
+                 style="width: 100%; padding: 12px 16px; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); background: var(--bg-light);" required>
+        </div>
+
+        <div style="margin-bottom: 24px;">
+          <label style="display: block; font-size: 0.88rem; font-weight: 700; margin-bottom: 6px; color: var(--primary);">
+            Password:
+          </label>
+          <input type="password" name="password" id="loginPassword" class="scanner-input-field"
+                 placeholder="Enter account password"
+                 style="width: 100%; padding: 12px 16px; border: 1.5px solid var(--border-light); border-radius: var(--radius-md); background: var(--bg-light);" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="width: 100%;">
+          Sign In to Terminal
+        </button>
+      </form>
+
+      <div style="text-align: center; margin-top: 24px; font-size: 0.9rem; color: var(--text-muted);">
+        Don't have an account? <a href="{{ url_for('register') }}" style="color: var(--primary-accent); font-weight: 700;">Create Account</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  document.getElementById('fillDemoCredsBtn')?.addEventListener('click', () => {
+    document.getElementById('loginEmail').value = 'brijesh@phishguard.local';
+    document.getElementById('loginPassword').value = 'password123';
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,415 @@
+{% extends "base.html" %}
+
+{% block title %}Cybersecurity Awareness Hub - PHISHGUARD{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 60px;">
+  <div class="container">
+    <div class="text-center" style="margin-bottom: 40px;">
+      <div class="section-tag mx-auto">Cybersecurity Training &amp; Literacy</div>
+      <h1 class="section-title">Awareness &amp; Defense Hub</h1>
+      <p class="section-subtitle mx-auto">
+        Transform from a passive cyber target into an active defender. Master the four-phase training curriculum to recognize, analyze, and neutralize social engineering threats.
+      </p>
+    </div>
+
+    <!-- 4-Stage Learning Pipeline Navigation -->
+    <div class="learning-pipeline-nav">
+      <div class="pipeline-step-tab active" onclick="scrollToSection('stage-learn')">
+        <span>01</span>
+        <span>Learn Foundations</span>
+      </div>
+      <div class="pipeline-step-tab" onclick="scrollToSection('stage-recognize')">
+        <span>02</span>
+        <span>Recognize Red Flags</span>
+      </div>
+      <div class="pipeline-step-tab" onclick="scrollToSection('stage-practice')">
+        <span>03</span>
+        <span>Practice Defensive Rules</span>
+      </div>
+      <div class="pipeline-step-tab" onclick="scrollToSection('stage-test')">
+        <span>04</span>
+        <span>Test Yourself</span>
+      </div>
+    </div>
+
+    <!-- STAGE 01: LEARN FOUNDATIONS -->
+    <div id="stage-learn" style="margin-bottom: 80px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+        <span class="step-badge" style="width: 44px; height: 44px; font-size: 1.1rem; margin-bottom: 0;">01</span>
+        <div>
+          <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary);">Stage 1: Core Attack Vector Knowledge</h2>
+          <p style="font-size: 0.95rem; color: var(--text-muted);">Explore fundamental mechanisms utilized in modern cyber threat campaigns.</p>
+        </div>
+      </div>
+
+      <div class="awareness-grid" style="margin-top: 24px;">
+        <!-- Card 1 -->
+        <div class="awareness-card" onclick="openAwarenessModal('what_is_phishing')" role="button" tabindex="0">
+          <div class="awareness-card-top-row">
+            <span class="awareness-topic-badge">Module 01</span>
+            <div class="awareness-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+          </div>
+          <h4 class="awareness-card-title">1. What is Phishing?</h4>
+          <p class="awareness-card-desc">
+            Phishing is a social engineering technique where cybercriminals masquerade as legitimate organizations to deceive individuals into revealing sensitive credentials, financial data, or launching malware.
+          </p>
+          <div class="awareness-card-action">
+            <span>Explore Interactive Module</span> &rarr;
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="awareness-card" onclick="openAwarenessModal('email_phishing')" role="button" tabindex="0">
+          <div class="awareness-card-top-row">
+            <span class="awareness-topic-badge">Module 02</span>
+            <div class="awareness-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </div>
+          </div>
+          <h4 class="awareness-card-title">2. Email Phishing &amp; BEC</h4>
+          <p class="awareness-card-desc">
+            Business Email Compromise (BEC) and spear phishing target specific executives or staff using spoofed headers, forging vendor invoices or urgent wire transfer directives.
+          </p>
+          <div class="awareness-card-action">
+            <span>Explore Interactive Module</span> &rarr;
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="awareness-card" onclick="openAwarenessModal('smishing_vishing')" role="button" tabindex="0">
+          <div class="awareness-card-top-row">
+            <span class="awareness-topic-badge">Module 03</span>
+            <div class="awareness-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            </div>
+          </div>
+          <h4 class="awareness-card-title">3. Smishing &amp; Vishing</h4>
+          <p class="awareness-card-desc">
+            SMS phishing delivers deceptive package delivery warnings or urgent account lock SMS messages. Voice phishing (vishing) uses phone calls posing as technical or bank support.
+          </p>
+          <div class="awareness-card-action">
+            <span>Explore Interactive Module</span> &rarr;
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="awareness-card" onclick="openAwarenessModal('fake_websites')" role="button" tabindex="0">
+          <div class="awareness-card-top-row">
+            <span class="awareness-topic-badge">Module 04</span>
+            <div class="awareness-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+            </div>
+          </div>
+          <h4 class="awareness-card-title">4. Fake Domains &amp; Typosquatting</h4>
+          <p class="awareness-card-desc">
+            Attackers register lookalike domains using subtle typos (e.g. <code>paypa1.com</code> or <code>goog1e.com</code>) or deceptive subdomains (<code>paypal.com.verify-login.xyz</code>).
+          </p>
+          <div class="awareness-card-action">
+            <span>Explore Interactive Module</span> &rarr;
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="awareness-card" onclick="openAwarenessModal('social_engineering')" role="button" tabindex="0">
+          <div class="awareness-card-top-row">
+            <span class="awareness-topic-badge">Module 05</span>
+            <div class="awareness-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+          </div>
+          <h4 class="awareness-card-title">5. Social Engineering Psychology</h4>
+          <p class="awareness-card-desc">
+            Attacks exploit fundamental human emotions: fear of loss, authority compliance, curiosity, urgency, and greed (e.g. winning an unexpected sweepstakes).
+          </p>
+          <div class="awareness-card-action">
+            <span>Explore Interactive Module</span> &rarr;
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="awareness-card" onclick="openAwarenessModal('password_safety')" role="button" tabindex="0">
+          <div class="awareness-card-top-row">
+            <span class="awareness-topic-badge">Module 06</span>
+            <div class="awareness-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+          </div>
+          <h4 class="awareness-card-title">6. Credential &amp; Password Safety</h4>
+          <p class="awareness-card-desc">
+            Never recycle passwords across services. A breach of a single secondary forum exposes your corporate and personal accounts if shared credentials are utilized.
+          </p>
+          <div class="awareness-card-action">
+            <span>Explore Interactive Module</span> &rarr;
+          </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="awareness-card" onclick="openAwarenessModal('mfa_security')" role="button" tabindex="0">
+          <div class="awareness-card-top-row">
+            <span class="awareness-topic-badge">Module 07</span>
+            <div class="awareness-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </div>
+          </div>
+          <h4 class="awareness-card-title">7. Multi-Factor Authentication</h4>
+          <p class="awareness-card-desc">
+            MFA adds a critical defense barrier beyond passwords. Learn to recognize MFA fatigue attacks, where attackers bombard your mobile phone with approval requests.
+          </p>
+          <div class="awareness-card-action">
+            <span>Explore Interactive Module</span> &rarr;
+          </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="awareness-card" onclick="openAwarenessModal('safe_browsing')" role="button" tabindex="0">
+          <div class="awareness-card-top-row">
+            <span class="awareness-topic-badge">Module 08</span>
+            <div class="awareness-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+            </div>
+          </div>
+          <h4 class="awareness-card-title">8. Safe Browsing &amp; Downloads</h4>
+          <p class="awareness-card-desc">
+            Never trust a link based solely on visible anchor text. Inspect download extensions (watch out for double extensions like <code>.pdf.exe</code>) and test suspicious targets in PhishGuard.
+          </p>
+          <div class="awareness-card-action">
+            <span>Explore Interactive Module</span> &rarr;
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAGE 02: RECOGNIZE RED FLAGS -->
+    <div id="stage-recognize" style="margin-bottom: 80px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+        <span class="step-badge" style="width: 44px; height: 44px; font-size: 1.1rem; margin-bottom: 0;">02</span>
+        <div>
+          <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary);">Stage 2: Critical Phishing Red Flags</h2>
+          <p style="font-size: 0.95rem; color: var(--text-muted);">How to dissect deceptive communications and identify subtle attacker anomalies.</p>
+        </div>
+      </div>
+
+      <!-- Phishing Anatomy Breakdown Card -->
+      <div class="checks-card" style="padding: 36px; margin-bottom: 32px;">
+        <h3 style="font-size: 1.25rem; font-weight: 800; color: var(--primary); margin-bottom: 16px;">
+          Anatomy of a Deceptive Email Attack
+        </h3>
+        <p style="color: var(--text-muted); font-size: 0.92rem; margin-bottom: 24px;">
+          Notice the key elements cybercriminals combine to elicit an immediate emotional click:
+        </p>
+
+        <div style="background: var(--bg-light); border: 2px dashed #CBD5E1; border-radius: var(--radius-lg); padding: 28px;">
+          <!-- 1. Sender Header Flag -->
+          <div style="background: #FEF2F2; border-left: 4px solid #EF4444; padding: 12px 16px; border-radius: 6px; margin-bottom: 14px;">
+            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #EF4444; letter-spacing: 0.05em;">[RED FLAG 1: DISPLAY SPOOFING]</span>
+            <div style="font-family: var(--font-mono); font-size: 0.9rem; color: #991B1B; margin-top: 4px;">
+              From: "PayPal Account Security" &lt;support@random-xyz-cloud92.com&gt;
+            </div>
+            <div style="font-size: 0.8rem; color: #7F1D1D; margin-top: 2px;">The display name says PayPal, but the actual domain is an unregistered, cheap third-party mailbox.</div>
+          </div>
+
+          <!-- 2. Generic Greeting Flag -->
+          <div style="background: #FFFBEB; border-left: 4px solid #F59E0B; padding: 12px 16px; border-radius: 6px; margin-bottom: 14px;">
+            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #F59E0B; letter-spacing: 0.05em;">[RED FLAG 2: GENERIC SALUTATION]</span>
+            <div style="font-size: 0.92rem; color: #92400E; margin-top: 4px;">
+              "Dear Valued Account Holder / Customer,"
+            </div>
+            <div style="font-size: 0.8rem; color: #78350F; margin-top: 2px;">Legitimate organizations that maintain your account always address you by your verified first and last name.</div>
+          </div>
+
+          <!-- 3. False Urgency Deadline -->
+          <div style="background: #FEF2F2; border-left: 4px solid #EF4444; padding: 12px 16px; border-radius: 6px; margin-bottom: 14px;">
+            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #EF4444; letter-spacing: 0.05em;">[RED FLAG 3: ARTIFICIAL CRISIS &amp; DEADLINE]</span>
+            <div style="font-size: 0.92rem; color: #991B1B; margin-top: 4px;">
+              "Your account will be permanently terminated within 12 hours unless identity verification is submitted."
+            </div>
+            <div style="font-size: 0.8rem; color: #7F1D1D; margin-top: 2px;">Manufactured urgency bypasses critical thinking and forces panic-driven compliance.</div>
+          </div>
+
+          <!-- 4. Deceptive Mismatched Link -->
+          <div style="background: #FEF2F2; border-left: 4px solid #EF4444; padding: 12px 16px; border-radius: 6px;">
+            <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: #EF4444; letter-spacing: 0.05em;">[RED FLAG 4: MISMATCHED HYPERLINK TARGET]</span>
+            <div style="font-size: 0.92rem; margin-top: 4px;">
+              Visible text: <span style="color: #0284C7; text-decoration: underline;">https://www.paypal.com/verify</span>
+              <br>
+              Actual Destination on hover: <span style="font-family: var(--font-mono); color: #EF4444; font-weight: 700;">http://paypa1-account-restore.club/login</span>
+            </div>
+            <div style="font-size: 0.8rem; color: #7F1D1D; margin-top: 2px;">Hovering reveals the target routes to a fake credential harvesting portal.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAGE 03: PRACTICE DEFENSIVE RULES -->
+    <div id="stage-practice" style="margin-bottom: 80px;">
+      <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+        <span class="step-badge" style="width: 44px; height: 44px; font-size: 1.1rem; margin-bottom: 0;">03</span>
+        <div>
+          <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--primary);">Stage 3: Interactive Do's and Don'ts</h2>
+          <p style="font-size: 0.95rem; color: var(--text-muted);">Actionable habits to maintain impenetrable daily cybersecurity posture.</p>
+        </div>
+      </div>
+
+      <div class="dos-donts-grid">
+        <!-- DO's Card -->
+        <div class="dos-card">
+          <div class="dos-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            DO: Proactive Defense Habits
+          </div>
+          <ul class="practice-list dos-list">
+            <li>
+              <span>✓</span>
+              <span><strong>Hover before clicking:</strong> Always verify the destination link in the status bar before tapping or clicking.</span>
+            </li>
+            <li>
+              <span>✓</span>
+              <span><strong>Navigate independently:</strong> If a bank or service sends an alert, open a fresh browser tab and manually type their official address.</span>
+            </li>
+            <li>
+              <span>✓</span>
+              <span><strong>Enable App-based 2FA:</strong> Utilize authenticators (Google Authenticator, Microsoft Authenticator) or security keys instead of SMS.</span>
+            </li>
+            <li>
+              <span>✓</span>
+              <span><strong>Verify financial requests out-of-band:</strong> Call the requester via a verified corporate directory number before authorizing payments.</span>
+            </li>
+            <li>
+              <span>✓</span>
+              <span><strong>Scan suspect targets in PhishGuard:</strong> Feed ambiguous links into our heuristic analyzer to review automated risk indicators.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- DONT's Card -->
+        <div class="donts-card">
+          <div class="donts-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+            DON'T: Common Pitfalls
+          </div>
+          <ul class="practice-list donts-list">
+            <li>
+              <span>✗</span>
+              <span><strong>Don't trust the display name alone:</strong> Always inspect the actual email domain address following the "@" symbol.</span>
+            </li>
+            <li>
+              <span>✗</span>
+              <span><strong>Don't surrender MFA one-time codes:</strong> Never provide 6-digit OTP codes over phone, SMS, or direct messages.</span>
+            </li>
+            <li>
+              <span>✗</span>
+              <span><strong>Don't approve unexpected push prompts:</strong> If your phone buzzes with an MFA request you didn't initiate, tap 'Deny' immediately.</span>
+            </li>
+            <li>
+              <span>✗</span>
+              <span><strong>Don't enable macros on email attachments:</strong> Legitimate invoices do not require you to "Enable Editing &amp; Content" to view text.</span>
+            </li>
+            <li>
+              <span>✗</span>
+              <span><strong>Don't pay with gift cards:</strong> No legitimate government agency, vendor, or executive will ever request payment in gift cards.</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAGE 04: TEST YOURSELF -->
+    <div id="stage-test">
+      <div class="quiz-promo-box" style="margin-top: 0;">
+        <div>
+          <div class="section-tag section-tag-dark">Stage 4: Validation</div>
+          <h2 style="font-size: 2.4rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px;">
+            Ready to test your instincts?
+          </h2>
+          <p style="font-size: 1.05rem; color: #CBD5E1; max-width: 560px; line-height: 1.6; margin-bottom: 28px;">
+            Put your cybersecurity awareness to the test across 10 realistic threat scenarios. Receive instant feedback and claim your printable certificate upon passing!
+          </p>
+          <a href="{{ url_for('quiz_view') }}" class="btn btn-accent btn-lg">
+            Launch Interactive Challenge &rarr;
+          </a>
+        </div>
+        <div class="quiz-badge-graphic">
+          <div class="shield-quiz-art">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          </div>
+          <h4 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;">PhishGuard Accreditation</h4>
+          <p style="font-size: 0.88rem; color: #94A3B8;">Certified Cyber Defender Badge</p>
+        </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Interactive Awareness Learning Modal Dialog -->
+<div class="awareness-modal-overlay" id="awarenessModalOverlay" role="dialog" aria-modal="true">
+  <div class="awareness-modal-card">
+    <div class="awareness-modal-header">
+      <div>
+        <span class="section-tag" id="modalTag">CYBERSECURITY CURRICULUM</span>
+        <h3 id="modalTitle">Module Title</h3>
+      </div>
+      <button type="button" class="awareness-modal-close-btn" id="modalCloseBtn" aria-label="Close dialog">&times;</button>
+    </div>
+
+    <div class="awareness-modal-body">
+      <p id="modalOverview" style="font-size: 1rem; color: var(--text-muted); line-height: 1.6;"></p>
+
+      <!-- Simulated Scenario -->
+      <div class="modal-scenario-card">
+        <h5 id="modalScenarioTitle">Simulated Attack Scenario</h5>
+        <p id="modalScenarioText"></p>
+      </div>
+
+      <!-- Critical Red Flags -->
+      <div>
+        <h4 class="modal-section-title">
+          <span style="color: #EF4444;">⚠</span> Critical Red Flags &amp; Indicators:
+        </h4>
+        <ul class="modal-checklist red-flags" id="modalRedFlagsList"></ul>
+      </div>
+
+      <!-- Defensive Action Steps -->
+      <div>
+        <h4 class="modal-section-title">
+          <span style="color: #10B981;">✓</span> Defensive Countermeasures:
+        </h4>
+        <ul class="modal-checklist defense-steps" id="modalDefenseList"></ul>
+      </div>
+    </div>
+
+    <div class="awareness-modal-footer">
+      <div style="font-size: 0.85rem; color: var(--text-muted);">
+        Interactive Awareness Module • PhishGuard Certified
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <a href="{{ url_for('quiz_view') }}" class="btn btn-accent btn-sm">
+          Test in Cyber Quiz &rarr;
+        </a>
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeAwarenessModal()">
+          Close Module
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.pipeline-step-tab').forEach(t => t.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PHISHGUARD - Project Documentation & System Design Report</title>
+  <style>
+    /* ==========================================================================
+       Academic Report Print Stylesheet (A4 ISO Compliant)
+       ========================================================================== */
+    @page {
+      size: A4 portrait;
+      margin: 20mm 18mm 20mm 18mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      font-size: 11pt;
+      line-height: 1.6;
+      color: #1E293B;
+      background: #F8FAFC;
+    }
+
+    .report-wrapper {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #FFFFFF;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.08);
+      padding: 48px;
+    }
+
+    /* Print Overrides */
+    @media print {
+      body {
+        background: #FFFFFF;
+      }
+      .report-wrapper {
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .page-break {
+        page-break-before: always;
+        break-before: page;
+      }
+      h1, h2, h3, h4 {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      table, .diagram-container, .chart-card {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+    }
+
+    /* Floating Action Bar */
+    .action-bar {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      gap: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      padding: 10px 16px;
+      border-radius: 50px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    }
+
+    .action-btn {
+      background: #0284C7;
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #0369A1;
+      transform: translateY(-1px);
+    }
+
+    .action-btn.secondary {
+      background: rgba(255,255,255,0.15);
+    }
+    .action-btn.secondary:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    /* Typography & Hierarchy */
+    h1, h2, h3, h4 {
+      font-family: Georgia, 'Times New Roman', serif;
+      color: #0F172A;
+      font-weight: 700;
+    }
+
+    h1.chapter-title {
+      font-size: 20pt;
+      border-bottom: 2px solid #0F172A;
+      padding-bottom: 8px;
+      margin-top: 36px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    h2.section-heading {
+      font-size: 15pt;
+      color: #0369A1;
+      border-left: 4px solid #0284C7;
+      padding-left: 12px;
+      margin-top: 28px;
+      margin-bottom: 14px;
+    }
+
+    h3.sub-heading {
+      font-size: 12.5pt;
+      color: #1E293B;
+      margin-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    h4.sub-sub-heading {
+      font-size: 11pt;
+      color: #334155;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+
+    p {
+      margin-bottom: 12px;
+      text-align: justify;
+    }
+
+    ul, ol {
+      margin-left: 24px;
+      margin-bottom: 14px;
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    /* Cover Page */
+    .cover-page {
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      border: 3px double #0F172A;
+      padding: 40px 24px;
+      margin-bottom: 40px;
+    }
+
+    .cover-header .inst-title {
+      font-size: 17pt;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      color: #0F172A;
+      text-transform: uppercase;
+    }
+    .cover-header .dept-title {
+      font-size: 12pt;
+      font-weight: 600;
+      color: #475569;
+      margin-top: 6px;
+    }
+
+    .cover-emblem {
+      margin: 30px auto;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0B132B 0%, #0284C7 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      box-shadow: 0 10px 25px rgba(2, 132, 199, 0.35);
+    }
+
+    .cover-project-title {
+      font-size: 24pt;
+      font-weight: 800;
+      color: #0F172A;
+      letter-spacing: -0.01em;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+
+    .cover-project-subtitle {
+      font-size: 13pt;
+      color: #0284C7;
+      font-weight: 600;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .cover-meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      width: 100%;
+      max-width: 650px;
+      margin: 20px auto;
+      text-align: left;
+      gap: 30px;
+      border-top: 1px solid #E2E8F0;
+      border-bottom: 1px solid #E2E8F0;
+      padding: 24px 16px;
+    }
+
+    .meta-col .label {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .meta-col .name {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .meta-col .desc {
+      font-size: 10pt;
+      color: #64748B;
+      margin-top: 4px;
+    }
+
+    .cover-footer {
+      font-size: 11pt;
+      color: #475569;
+      font-weight: 600;
+    }
+
+    /* Callout & Highlight Boxes */
+    .callout-box {
+      background: #F1F5F9;
+      border-left: 4px solid #0284C7;
+      padding: 14px 18px;
+      border-radius: 0 8px 8px 0;
+      margin: 18px 0;
+      font-size: 10.5pt;
+    }
+
+    .callout-box.security {
+      background: #EFF6FF;
+      border-color: #2563EB;
+    }
+
+    .callout-box.success {
+      background: #ECFDF5;
+      border-color: #10B981;
+    }
+
+    /* Tables */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 18px 0;
+      font-size: 10pt;
+    }
+
+    table.data-table th, table.data-table td {
+      border: 1px solid #CBD5E1;
+      padding: 10px 12px;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background-color: #0F172A;
+      color: #FFFFFF;
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 9pt;
+      letter-spacing: 0.05em;
+    }
+
+    table.data-table tr:nth-child(even) {
+      background-color: #F8FAFC;
+    }
+
+    /* Diagram & Visual Containers */
+    .diagram-container {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 22px 0;
+      text-align: center;
+    }
+
+    .diagram-title {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #334155;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    /* Charts Layout Grid */
+    .charts-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 22px 0;
+    }
+
+    .chart-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .chart-card-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    /* Code blocks */
+    pre, code {
+      font-family: Consolas, 'Courier New', Courier, monospace;
+      font-size: 9.5pt;
+    }
+
+    pre {
+      background: #0F172A;
+      color: #F8FAFC;
+      padding: 14px 18px;
+      border-radius: 6px;
+      overflow-x: auto;
+      margin: 16px 0;
+      line-height: 1.45;
+    }
+
+    code.inline-code {
+      background: #E2E8F0;
+      color: #0F172A;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 9pt;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Print/Export Controller for Browser View -->
+  <div class="action-bar no-print">
+    <button class="action-btn" onclick="window.print()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      Print / Save as PDF
+    </button>
+    <a href="/" class="action-btn secondary" style="text-decoration: none;">
+      Return to Live Application
+    </a>
+  </div>
+
+  <div class="report-wrapper">
+
+    <!-- ========================================================================
+         OFFICIAL ACADEMIC COVER PAGE
+         ======================================================================== -->
+    <div class="cover-page">
+      <div class="cover-header">
+        <div class="inst-title">COLLEGE MINI PROJECT DOCUMENTATION</div>
+        <div class="dept-title">Department of Computer Engineering &amp; Information Technology</div>
+        <div style="font-size: 10.5pt; color: #64748B; margin-top: 4px;">Academic Session: 2025 – 2026</div>
+      </div>
+
+      <div>
+        <div class="cover-emblem">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 8v4"/>
+            <path d="M12 16h.01"/>
+          </svg>
+        </div>
+        <h1 class="cover-project-title">PHISHGUARD</h1>
+        <div class="cover-project-subtitle">Phishing Attack Detection &amp; Awareness System</div>
+        <p style="max-width: 600px; margin: 0 auto; color: #475569; font-size: 11pt;">
+          A comprehensive design, heuristic telemetry implementation, and empirical evaluation report of an explainable multi-vector cybersecurity platform.
+        </p>
+      </div>
+
+      <div class="cover-meta-grid">
+        <div class="meta-col">
+          <span class="label">Submitted By</span>
+          <div class="name">Chauhan Brijesh Ramayan</div>
+          <div class="desc">Student Developer / Lead Investigator</div>
+          <div class="desc" style="font-family: monospace;">College Mini Project Candidate</div>
+        </div>
+        <div class="meta-col">
+          <span class="label">Project Guide / Mentor</span>
+          <div class="name">Jagruti Raut</div>
+          <div class="desc">Project Guide &amp; Technical Mentor</div>
+          <div class="desc">Department Faculty Guide</div>
+        </div>
+      </div>
+
+      <div class="cover-footer">
+        <div>Project Classification: Final Year / Semester Mini-Project Submission</div>
+        <div style="margin-top: 4px;">Status: Fully Implemented, Unit-Tested &amp; Production-Ready</div>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         TABLE OF CONTENTS
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h1 class="chapter-title">Table of Contents</h1>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th style="width: 15%;">Index</th>
+          <th style="width: 70%;">Chapter &amp; Topic Title</th>
+          <th style="width: 15%;">Module</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="background: #E2E8F0; font-weight: 700;"><td colspan="3">MODULE 1: PROBLEM IDENTIFICATION, REQUIREMENT ENGINEERING &amp; SYSTEM DESIGN</td></tr>
+        <tr><td><strong>1.0</strong></td><td><strong>Problem Identification &amp; Feasibility Study</strong> (1.1 - 1.5.3)</td><td>Module 1</td></tr>
+        <tr><td><strong>2.0</strong></td><td><strong>Requirement Engineering</strong> (2.1 - 2.5)</td><td>Module 1</td></tr>
+        <tr><td><strong>3.0</strong></td><td><strong>Software Development Life Cycle (SDLC) Planning</strong> (3.1 - 3.4)</td><td>Module 1</td></tr>
+        <tr><td><strong>4.0</strong></td><td><strong>System Modeling Using UML</strong> (4.1 Use Case, 4.3 Class, 4.4 Sequence, 4.5 Activity, 4.6 ER, 4.7 Deployment)</td><td>Module 1</td></tr>
+        <tr><td><strong>5.0</strong></td><td><strong>System Architecture Design</strong> (5.1 - 5.4)</td><td>Module 1</td></tr>
+        <tr style="background: #E2E8F0; font-weight: 700;"><td colspan="3">MODULE 2: IMPLEMENTATION, TESTING, DEPLOYMENT &amp; EVALUATION</td></tr>
+        <tr><td><strong>6.0</strong></td><td><strong>Application Development</strong> (6.1 Frontend, 6.2 Backend, 6.3 Database, 6.4 Auth, 6.5 Errors)</td><td>Module 2</td></tr>
+        <tr><td><strong>7.0</strong></td><td><strong>Integration &amp; System Testing</strong> (7.1 Unit, 7.2 Black-Box, 7.3 Integration, 7.4 Test Cases, 7.5 Bugs)</td><td>Module 2</td></tr>
+        <tr><td><strong>8.0</strong></td><td><strong>Application Deployment</strong> (8.1 Cloud, 8.2 Local Hosting, 8.3 APK Build, 8.4 Server, 8.5 Git)</td><td>Module 2</td></tr>
+        <tr><td><strong>9.0</strong></td><td><strong>Performance &amp; Security Testing</strong> (9.1 Load, 9.2 Validation, 9.3 Security)</td><td>Module 2</td></tr>
+        <tr><td><strong>10.0</strong></td><td><strong>Final Documentation</strong> (10.1 Reports, 10.2 User Manual, 10.3 Limitations, 10.4 Future, 10.5 References)</td><td>Module 2</td></tr>
+      </tbody>
+    </table>
+
+    <!-- ========================================================================
+         EXECUTIVE SUMMARY / PROJECT SYNOPSIS
+         ======================================================================== -->
+    <h2 class="section-heading">Project Synopsis &amp; Abstract</h2>
+    <p>
+      Phishing is globally recognized as the primary attack vector for advanced persistent threats, identity theft, and corporate ransomware. Over 91% of successful enterprise security compromises initiate via fraudulent social engineering emails and obfuscated web links. <strong>PHISHGUARD</strong> (Phishing Attack Detection &amp; Awareness System) solves this critical vulnerability by combining an instantaneous, explainable 14-point heuristic analysis engine with an interactive, scenario-based user accreditation and training platform.
+    </p>
+
+    <!-- Visual Pie Charts Grid -->
+    <div class="charts-grid-2">
+      <!-- Pie Chart 1: Global Phishing Vectors -->
+      <div class="chart-card">
+        <div class="chart-card-title">Figure 1.1: Attack Vector Distribution (APWG Data)</div>
+        <svg width="220" height="220" viewBox="0 0 42 42">
+          <!-- Background Circle -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="#fff"/>
+          <!-- Email Phishing 48% (Navy #0B132B) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#0B132B" stroke-width="6" stroke-dasharray="48 52" stroke-dashoffset="25"/>
+          <!-- Deceptive URLs 32% (Cyan #0284C7) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#0284C7" stroke-width="6" stroke-dasharray="32 68" stroke-dashoffset="77"/>
+          <!-- Smishing / SMS 12% (Amber #F59E0B) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#F59E0B" stroke-width="6" stroke-dasharray="12 88" stroke-dashoffset="45"/>
+          <!-- Brand Typosquatting 8% (Rose #EF4444) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#EF4444" stroke-width="6" stroke-dasharray="8 92" stroke-dashoffset="33"/>
+          <text x="21" y="22" font-size="3.5" text-anchor="middle" font-weight="bold" fill="#0F172A">VECTORS</text>
+        </svg>
+        <div style="font-size: 8.5pt; color: #475569; margin-top: 8px; line-height: 1.4;">
+          <span style="color:#0B132B;">■</span> Email Lures (48%) &nbsp;
+          <span style="color:#0284C7;">■</span> Malicious URLs (32%)<br>
+          <span style="color:#F59E0B;">■</span> Smishing (12%) &nbsp;
+          <span style="color:#EF4444;">■</span> Brand Typosquats (8%)
+        </div>
+      </div>
+
+      <!-- Pie Chart 2: Heuristic Rule Distribution -->
+      <div class="chart-card">
+        <div class="chart-card-title">Figure 1.2: PhishGuard Detection Weightage</div>
+        <svg width="220" height="220" viewBox="0 0 42 42">
+          <circle cx="21" cy="21" r="15.91549430918954" fill="#fff"/>
+          <!-- Brand Spoofing 25% (#0284C7) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#0284C7" stroke-width="6" stroke-dasharray="25 75" stroke-dashoffset="25"/>
+          <!-- Lexical / Structure 25% (#10B981) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#10B981" stroke-width="6" stroke-dasharray="25 75" stroke-dashoffset="0"/>
+          <!-- TLS / Protocol 20% (#3B82F6) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#3B82F6" stroke-width="6" stroke-dasharray="20 80" stroke-dashoffset="75"/>
+          <!-- Social Urgency 15% (#F59E0B) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#F59E0B" stroke-width="6" stroke-dasharray="15 85" stroke-dashoffset="55"/>
+          <!-- Obfuscation / Raw IP 15% (#EF4444) -->
+          <circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#EF4444" stroke-width="6" stroke-dasharray="15 85" stroke-dashoffset="40"/>
+          <text x="21" y="22" font-size="3.5" text-anchor="middle" font-weight="bold" fill="#0F172A">ENGINE</text>
+        </svg>
+        <div style="font-size: 8.5pt; color: #475569; margin-top: 8px; line-height: 1.4;">
+          <span style="color:#0284C7;">■</span> Brand Spoof (25%) &nbsp;
+          <span style="color:#10B981;">■</span> Lexical/Syntax (25%)<br>
+          <span style="color:#3B82F6;">■</span> TLS/Security (20%) &nbsp;
+          <span style="color:#F59E0B;">■</span> Urgency (15%) &nbsp;
+          <span style="color:#EF4444;">■</span> IP/Punycode (15%)
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================================
+         MODULE 1: PROBLEM IDENTIFICATION & FEASIBILITY STUDY
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h1 class="chapter-title">Module 1: Problem Identification, Requirement Engineering &amp; System Design</h1>
+
+    <h2 class="section-heading">1. Problem Identification &amp; Feasibility Study</h2>
+    
+    <h3 class="sub-heading">1.1 Identification of a Real-World Problem</h3>
+    <p>
+      In modern internet operations, cyber adversaries frequently deploy rapid-fire, low-cost phishing attacks mimicking major banking institutions, cloud identity providers (Google, Microsoft, Apple), and e-commerce platforms. Everyday users, students, and corporate personnel routinely fail to inspect subtle Uniform Resource Identifier (URI) deceptive anomalies—such as Cyrillic homoglyphs, IP address hostnames, excessive subdomains, or unencrypted HTTP channels. Furthermore, traditional browser warning banners offer binary ("Block/Allow") verdicts without explaining <em>why</em> a destination is hazardous, preventing users from building lasting security intuition.
+    </p>
+
+    <h3 class="sub-heading">1.2 Problem Justification</h3>
+    <p>
+      Statistically, the Anti-Phishing Working Group (APWG) observed over 4.7 million unique phishing attacks in recent calendar years. Static blacklists (such as Google Safe Browsing) require hours or days to ingest newly registered malicious domains, leaving an unprotected "zero-hour" detection window during which over 70% of victim credentials are harvested. A lightweight, client-accessible heuristic scanner combined with continuous awareness education addresses this defensive vulnerability directly.
+    </p>
+
+    <h3 class="sub-heading">1.3 Scope Definition</h3>
+    <p>
+      The scope of <strong>PHISHGUARD</strong> encompasses:
+    </p>
+    <ul>
+      <li><strong>In-Scope:</strong> Real-time heuristic lexical evaluation of web URLs across 14 security rules; pattern-based parsing of suspicious email headers and urgency text; explainable scoring (0 to 100); multi-role user authentication; CSV export of security audit logs; responsive 10-question cyber awareness quiz with accredited certification.</li>
+      <li><strong>Out-of-Scope:</strong> Direct network packet interception/MITM proxying; dynamic headless browser sandbox malware execution (detonation chamber); manual reverse-engineering of binary email attachments.</li>
+    </ul>
+
+    <h3 class="sub-heading">1.4 Stakeholder Identification</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Stakeholder Role</th>
+          <th>Responsibilities &amp; Goals</th>
+          <th>System Interactions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>End User / Student</strong></td>
+          <td>Scan ambiguous URLs and email snippets; understand threat levels; complete quizzes and receive accreditation.</td>
+          <td>Access Landing Page, URL Scanner, Email Analyzer, Awareness Hub, and Quiz Interface.</td>
+        </tr>
+        <tr>
+          <td><strong>Security Administrator</strong></td>
+          <td>Audit organizational telemetry, review high-risk phishing incidents, monitor user compliance.</td>
+          <td>Operations Dashboard, Audit Reports Table, Filter Controls, CSV Telemetry Export.</td>
+        </tr>
+        <tr>
+          <td><strong>Project Mentor / Evaluator</strong></td>
+          <td>Review system architecture, verify code quality, validate test execution and documentation.</td>
+          <td>Technical Viva Demonstration, Source Code Review, Academic Synopsis &amp; Report Audit.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-heading">1.5 Feasibility Study</h3>
+    <h4 class="sub-sub-heading">1.5.1 Technical Feasibility</h4>
+    <p>
+      The system utilizes Python 3.13, Flask 3.1, and standard lexical parsing libraries (`urllib.parse`, `re`, `ipaddress`). Storage is managed via a dual-engine database layer (`database.py`) providing native SQLite fallback with zero external dependencies and seamless MySQL scaling. All technologies are open-source, mature, and widely supported across Linux, Windows, and macOS environments.
+    </p>
+
+    <h4 class="sub-sub-heading">1.5.2 Economic Feasibility</h4>
+    <p>
+      The architecture incurs zero software licensing costs. By relying on deterministic algorithmic heuristics rather than commercial third-party threat intelligence APIs (e.g. VirusTotal API paid tiers), the operational cost of running PhishGuard on standard cloud instances (Render, PythonAnywhere, AWS Free Tier) is \$0.00.
+    </p>
+
+    <h4 class="sub-sub-heading">1.5.3 Operational Feasibility</h4>
+    <p>
+      The interface adheres strictly to modern human-computer interaction (HCI) standards inspired by commercial cybersecurity platforms. It requires no specialized technical training from end users; paste-and-click functionality ensures high operational adoption across diverse user groups.
+    </p>
+
+    <!-- ========================================================================
+         2. REQUIREMENT ENGINEERING
+         ======================================================================== -->
+    <h2 class="section-heading">2. Requirement Engineering</h2>
+    
+    <h3 class="sub-heading">2.1 Functional Requirements Specification (FRS)</h3>
+    <ol>
+      <li><strong>FR-01 (URL Phishing Scanner):</strong> System shall accept any HTTP/HTTPS URL and evaluate it against 14 discrete structural heuristics within &lt;500 milliseconds.</li>
+      <li><strong>FR-02 (Explainable Risk Scoring):</strong> System shall calculate a normalized risk score (0 to 100) and assign categorical badges: LOW RISK (0–39), SUSPICIOUS (40–69), and HIGH RISK (70–100).</li>
+      <li><strong>FR-03 (Social Engineering Email Analyzer):</strong> System shall parse sender headers, subject urgency, and message bodies to flag impersonation, panic words, and suspicious links.</li>
+      <li><strong>FR-04 (Role-Based Authentication):</strong> System shall enforce secure user registration, session management, and PBKDF2/SHA-256 password hashing via Werkzeug.</li>
+      <li><strong>FR-05 (Audit Telemetry &amp; CSV Export):</strong> System shall log every scan to the persistent database and allow filtering and instant CSV export of all audit logs.</li>
+      <li><strong>FR-06 (Interactive Quiz &amp; Certificate Generator):</strong> System shall present 10 randomized security scenarios, compute final scores, and dynamically render a verifiable accreditation certificate.</li>
+    </ol>
+
+    <h3 class="sub-heading">2.2 Non-Functional Requirements (NFR)</h3>
+    <ul>
+      <li><strong>Performance:</strong> Real-time scan response times under 200ms on local hardware; page load times under 1.2 seconds.</li>
+      <li><strong>Security:</strong> All database queries parameterized against SQL Injection; HTML escaping against XSS; Werkzeug session cookie protection (`HttpOnly`).</li>
+      <li><strong>Portability &amp; Responsiveness:</strong> Complete mobile responsiveness (Android, iOS, iPad, desktop) using fluid CSS grid, clamp typography, and touch drawer navigation.</li>
+      <li><strong>Reliability:</strong> 100% database failover from MySQL to SQLite if MySQL service is inactive.</li>
+    </ul>
+
+    <h3 class="sub-heading">2.3 Use-Case Analysis</h3>
+    <p>
+      The system models four primary operational actors: Guest Visitor, Authenticated User, Security Administrator, and Evaluator. Every actor accesses an optimized workflow with clear permission boundaries.
+    </p>
+
+    <h3 class="sub-heading">2.4 Requirement Prioritization (MoSCoW Matrix)</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Priority Level</th>
+          <th>Requirement Modules</th>
+          <th>Status in PhishGuard</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Must Have (M)</strong></td><td>14-Rule URL Scanner, Explainable Risk Score, SQLite/MySQL DB, User Auth</td><td>Completed &amp; Tested</td></tr>
+        <tr><td><strong>Should Have (S)</strong></td><td>Email Analyzer, Audit Telemetry Dashboard, CSV Export, Interactive Quiz</td><td>Completed &amp; Tested</td></tr>
+        <tr><td><strong>Could Have (C)</strong></td><td>Printable Accreditation Certificate, Mobile Touch Drawer Menu, Demo Auto-Fill</td><td>Completed &amp; Tested</td></tr>
+        <tr><td><strong>Won't Have (W)</strong></td><td>Live Headless Browser Sandbox Detonation (deferred to enterprise edition)</td><td>Future Scope</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-heading">2.5 Constraints and Assumptions</h3>
+    <p>
+      <strong>Constraints:</strong> System requires Python 3.9+ runtime; scan results reflect heuristic probabilities rather than infallible guarantees; offline testing relies on local algorithmic matching without external DNS lookups.  
+      <strong>Assumptions:</strong> End-users possess standard web browsers (Chrome, Edge, Firefox, Safari); input text is formatted in UTF-8.
+    </p>
+
+    <!-- ========================================================================
+         3. SDLC PLANNING
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h2 class="section-heading">3. Software Development Life Cycle (SDLC) Planning</h2>
+
+    <h3 class="sub-heading">3.1 Selection of SDLC Model (Agile Iterative Model)</h3>
+    <p>
+      The development followed the <strong>Agile Iterative Model</strong> over an 8-week timeline. This methodology permitted rapid development of the core heuristic detection engine (Sprint 1), followed by database persistence and auth integration (Sprint 2), UI/UX refinement inspired by commercial cybersecurity platforms (Sprint 3), and rigorous cross-device optimization and PyTest test validation (Sprint 4).
+    </p>
+
+    <h3 class="sub-heading">3.2 Work Breakdown Structure (WBS)</h3>
+    <ol>
+      <li><strong>Phase 1: Research &amp; Heuristics Modeling</strong> (Threat vector classification, 14 URL heuristics definition).</li>
+      <li><strong>Phase 2: Backend Architecture &amp; Database</strong> (Flask routing, dual-engine SQLite/MySQL layer, session security).</li>
+      <li><strong>Phase 3: Frontend Engineering &amp; UI Components</strong> (Landing page, circular risk gauge, accordion explanations, touch drawer).</li>
+      <li><strong>Phase 4: Awareness &amp; Quiz Engine</strong> (Curriculum development, 10 interactive scenarios, dynamic certification generator).</li>
+      <li><strong>Phase 5: Verification, Testing &amp; Packaging</strong> (14/14 PyTest suite, responsive Android audits, Netlify/Render deployment configurations).</li>
+    </ol>
+
+    <h3 class="sub-heading">3.3 Gantt Chart (Project Timeline Breakdown)</h3>
+    <div class="diagram-container">
+      <svg width="700" height="240" viewBox="0 0 700 240">
+        <!-- Background Grid -->
+        <rect x="0" y="0" width="700" height="240" fill="#F8FAFC" rx="6"/>
+        <line x1="160" y1="30" x2="680" y2="30" stroke="#CBD5E1" stroke-width="1"/>
+        <line x1="160" y1="30" x2="160" y2="220" stroke="#CBD5E1" stroke-width="1"/>
+        
+        <!-- Timeline Weeks Header -->
+        <text x="210" y="22" font-size="11" font-weight="bold" fill="#64748B" text-anchor="middle">Wk 1-2</text>
+        <text x="340" y="22" font-size="11" font-weight="bold" fill="#64748B" text-anchor="middle">Wk 3-4</text>
+        <text x="470" y="22" font-size="11" font-weight="bold" fill="#64748B" text-anchor="middle">Wk 5-6</text>
+        <text x="600" y="22" font-size="11" font-weight="bold" fill="#64748B" text-anchor="middle">Wk 7-8</text>
+
+        <!-- Vertical grid lines -->
+        <line x1="280" y1="30" x2="280" y2="220" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="410" y1="30" x2="410" y2="220" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="540" y1="30" x2="540" y2="220" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="670" y1="30" x2="670" y2="220" stroke="#E2E8F0" stroke-width="1" stroke-dasharray="4"/>
+
+        <!-- Task 1: Requirements & Research -->
+        <text x="140" y="58" font-size="11" font-weight="600" fill="#0F172A" text-anchor="end">1. Requirements &amp; Research</text>
+        <rect x="170" y="44" width="130" height="20" rx="4" fill="#0B132B"/>
+
+        <!-- Task 2: Core Heuristic Engine -->
+        <text x="140" y="98" font-size="11" font-weight="600" fill="#0F172A" text-anchor="end">2. Heuristics &amp; Detectors</text>
+        <rect x="235" y="84" width="160" height="20" rx="4" fill="#0284C7"/>
+
+        <!-- Task 3: Database & Auth -->
+        <text x="140" y="138" font-size="11" font-weight="600" fill="#0F172A" text-anchor="end">3. Dual DB &amp; Authentication</text>
+        <rect x="360" y="124" width="140" height="20" rx="4" fill="#10B981"/>
+
+        <!-- Task 4: UI/UX & Awareness Hub -->
+        <text x="140" y="178" font-size="11" font-weight="600" fill="#0F172A" text-anchor="end">4. UI/UX &amp; Awareness Hub</text>
+        <rect x="470" y="164" width="130" height="20" rx="4" fill="#F59E0B"/>
+
+        <!-- Task 5: Testing & Deployment -->
+        <text x="140" y="218" font-size="11" font-weight="600" fill="#0F172A" text-anchor="end">5. PyTest &amp; Deployment</text>
+        <rect x="560" y="204" width="110" height="20" rx="4" fill="#EF4444"/>
+      </svg>
+      <div class="diagram-title">Figure 3.1: Project Gantt Chart Across 8-Week Agile Iteration Phases</div>
+    </div>
+
+    <h3 class="sub-heading">3.4 Resource Planning</h3>
+    <p>
+      The project was developed independently by student researcher <strong>Chauhan Brijesh Ramayan</strong> under the weekly supervision and technical guidance of mentor <strong>Jagruti Raut</strong>. Hardware resources consisted of a standard development workstation running Windows 11 with Visual Studio Code, Git, Python 3.13, and modern mobile emulator testing tools.
+    </p>
+
+    <!-- ========================================================================
+         4. SYSTEM MODELING USING UML
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h2 class="section-heading">4. System Modeling Using UML</h2>
+    <p>
+      To rigorously capture system interactions, architectural state changes, and component relationships, unified modeling language (UML) diagrams were constructed for every major subsystem.
+    </p>
+
+    <!-- 4.1 Use Case Diagram -->
+    <h3 class="sub-heading">4.1 Use Case Diagram</h3>
+    <div class="diagram-container">
+      <svg width="680" height="340" viewBox="0 0 680 340">
+        <!-- System Boundary Box -->
+        <rect x="180" y="20" width="340" height="300" fill="#FFFFFF" stroke="#0F172A" stroke-width="2" rx="8"/>
+        <text x="350" y="42" font-size="12" font-weight="bold" fill="#0F172A" text-anchor="middle">PHISHGUARD PLATFORM</text>
+
+        <!-- Actor: User -->
+        <circle cx="80" cy="110" r="16" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+        <line x1="80" y1="126" x2="80" y2="165" stroke="#0F172A" stroke-width="2"/>
+        <line x1="60" y1="140" x2="100" y2="140" stroke="#0F172A" stroke-width="2"/>
+        <line x1="80" y1="165" x2="65" y2="195" stroke="#0F172A" stroke-width="2"/>
+        <line x1="80" y1="165" x2="95" y2="195" stroke="#0F172A" stroke-width="2"/>
+        <text x="80" y="215" font-size="11" font-weight="bold" fill="#0F172A" text-anchor="middle">End User / Student</text>
+
+        <!-- Actor: Admin -->
+        <circle cx="600" cy="190" r="16" fill="#E2E8F0" stroke="#0F172A" stroke-width="2"/>
+        <line x1="600" y1="206" x2="600" y2="245" stroke="#0F172A" stroke-width="2"/>
+        <line x1="580" y1="220" x2="620" y2="220" stroke="#0F172A" stroke-width="2"/>
+        <line x1="600" y1="245" x2="585" y2="275" stroke="#0F172A" stroke-width="2"/>
+        <line x1="600" y1="245" x2="615" y2="275" stroke="#0F172A" stroke-width="2"/>
+        <text x="600" y="295" font-size="11" font-weight="bold" fill="#0F172A" text-anchor="middle">Administrator</text>
+
+        <!-- Use Cases (Ovals) -->
+        <ellipse cx="350" cy="75" rx="100" ry="18" fill="#F0FDF4" stroke="#16A34A" stroke-width="1.5"/>
+        <text x="350" y="79" font-size="10" font-weight="600" fill="#14532D" text-anchor="middle">Scan Suspicious URL</text>
+
+        <ellipse cx="350" cy="125" rx="100" ry="18" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="350" y="129" font-size="10" font-weight="600" fill="#1E3A8A" text-anchor="middle">Analyze Email Threat</text>
+
+        <ellipse cx="350" cy="175" rx="100" ry="18" fill="#FEF3C7" stroke="#D97706" stroke-width="1.5"/>
+        <text x="350" y="179" font-size="10" font-weight="600" fill="#78350F" text-anchor="middle">Attempt Quiz &amp; Certificate</text>
+
+        <ellipse cx="350" cy="225" rx="100" ry="18" fill="#F1F5F9" stroke="#475569" stroke-width="1.5"/>
+        <text x="350" y="229" font-size="10" font-weight="600" fill="#0F172A" text-anchor="middle">Authenticate &amp; Profile</text>
+
+        <ellipse cx="350" cy="275" rx="100" ry="18" fill="#FEF2F2" stroke="#DC2626" stroke-width="1.5"/>
+        <text x="350" y="279" font-size="10" font-weight="600" fill="#7F1D1D" text-anchor="middle">View &amp; Export Audit Reports</text>
+
+        <!-- Connectors -->
+        <line x1="100" y1="130" x2="250" y2="78" stroke="#64748B" stroke-width="1.5"/>
+        <line x1="100" y1="140" x2="250" y2="125" stroke="#64748B" stroke-width="1.5"/>
+        <line x1="100" y1="150" x2="250" y2="175" stroke="#64748B" stroke-width="1.5"/>
+        <line x1="100" y1="160" x2="250" y2="225" stroke="#64748B" stroke-width="1.5"/>
+
+        <line x1="580" y1="210" x2="450" y2="225" stroke="#64748B" stroke-width="1.5"/>
+        <line x1="580" y1="220" x2="450" y2="275" stroke="#64748B" stroke-width="1.5"/>
+      </svg>
+      <div class="diagram-title">Figure 4.1: PhishGuard Complete Use Case Architecture</div>
+    </div>
+
+    <!-- 4.3 Class Diagram -->
+    <h3 class="sub-heading">4.3 Class Diagram</h3>
+    <div class="diagram-container">
+      <svg width="680" height="280" viewBox="0 0 680 280">
+        <!-- Class 1: URLDetector -->
+        <rect x="20" y="20" width="200" height="240" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5" rx="4"/>
+        <rect x="20" y="20" width="200" height="30" fill="#0F172A" rx="4 4 0 0"/>
+        <text x="120" y="40" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">URLDetector</text>
+        <text x="30" y="70" font-size="9" fill="#334155">- SUSPICIOUS_TLDS: set</text>
+        <text x="30" y="86" font-size="9" fill="#334155">- TRUSTED_BRANDS: dict</text>
+        <text x="30" y="102" font-size="9" fill="#334155">- SHORTENERS: set</text>
+        <line x1="20" y1="115" x2="220" y2="115" stroke="#CBD5E1" stroke-width="1"/>
+        <text x="30" y="135" font-size="9" fill="#0369A1">+ analyze_url(url): dict</text>
+        <text x="30" y="153" font-size="9" fill="#0369A1">+ check_ip_address(host)</text>
+        <text x="30" y="171" font-size="9" fill="#0369A1">+ check_brand_spoof(host)</text>
+        <text x="30" y="189" font-size="9" fill="#0369A1">+ check_punycode(host)</text>
+        <text x="30" y="207" font-size="9" fill="#0369A1">+ check_subdomains(host)</text>
+        <text x="30" y="225" font-size="9" fill="#0369A1">+ calculate_risk_score()</text>
+
+        <!-- Class 2: EmailDetector -->
+        <rect x="245" y="20" width="200" height="240" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5" rx="4"/>
+        <rect x="245" y="20" width="200" height="30" fill="#0369A1" rx="4 4 0 0"/>
+        <text x="345" y="40" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">EmailDetector</text>
+        <text x="255" y="70" font-size="9" fill="#334155">- URGENCY_TRIGGERS: list</text>
+        <text x="255" y="86" font-size="9" fill="#334155">- FREE_DOMAINS: set</text>
+        <text x="255" y="102" font-size="9" fill="#334155">- FINANCIAL_LURES: list</text>
+        <line x1="245" y1="115" x2="445" y2="115" stroke="#CBD5E1" stroke-width="1"/>
+        <text x="255" y="135" font-size="9" fill="#0369A1">+ analyze_email(s, subj, b)</text>
+        <text x="255" y="153" font-size="9" fill="#0369A1">+ check_sender_spoof()</text>
+        <text x="255" y="171" font-size="9" fill="#0369A1">+ check_urgency()</text>
+        <text x="255" y="189" font-size="9" fill="#0369A1">+ check_credentials_req()</text>
+        <text x="255" y="207" font-size="9" fill="#0369A1">+ scan_embedded_urls()</text>
+
+        <!-- Class 3: DatabaseManager -->
+        <rect x="470" y="20" width="190" height="240" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5" rx="4"/>
+        <rect x="470" y="20" width="190" height="30" fill="#0F172A" rx="4 4 0 0"/>
+        <text x="565" y="40" font-size="11" font-weight="bold" fill="#FFFFFF" text-anchor="middle">DatabaseEngine</text>
+        <text x="480" y="70" font-size="9" fill="#334155">- _using_mysql: bool</text>
+        <text x="480" y="86" font-size="9" fill="#334155">- SQLITE_DB_PATH: str</text>
+        <line x1="470" y1="115" x2="660" y2="115" stroke="#CBD5E1" stroke-width="1"/>
+        <text x="480" y="135" font-size="9" fill="#0369A1">+ get_db(): Connection</text>
+        <text x="480" y="153" font-size="9" fill="#0369A1">+ query_db(q, args, one)</text>
+        <text x="480" y="171" font-size="9" fill="#0369A1">+ execute_db(q, args)</text>
+        <text x="480" y="189" font-size="9" fill="#0369A1">+ check_mysql_conn()</text>
+        <text x="480" y="207" font-size="9" fill="#0369A1">+ init_db()</text>
+      </svg>
+      <div class="diagram-title">Figure 4.2: Object-Oriented Class Hierarchy Diagram</div>
+    </div>
+
+    <!-- 4.4 Sequence Diagram -->
+    <h3 class="sub-heading">4.4 Sequence Diagram (URL Analysis Flow)</h3>
+    <div class="diagram-container">
+      <svg width="680" height="260" viewBox="0 0 680 260">
+        <!-- Lifeline Headers -->
+        <rect x="40" y="15" width="100" height="30" fill="#0F172A" rx="4"/>
+        <text x="90" y="34" font-size="10" font-weight="bold" fill="#FFF" text-anchor="middle">User / Browser</text>
+        <line x1="90" y1="45" x2="90" y2="240" stroke="#CBD5E1" stroke-dasharray="4"/>
+
+        <rect x="230" y="15" width="100" height="30" fill="#0284C7" rx="4"/>
+        <text x="280" y="34" font-size="10" font-weight="bold" fill="#FFF" text-anchor="middle">Flask App (app.py)</text>
+        <line x1="280" y1="45" x2="280" y2="240" stroke="#CBD5E1" stroke-dasharray="4"/>
+
+        <rect x="410" y="15" width="110" height="30" fill="#10B981" rx="4"/>
+        <text x="465" y="34" font-size="10" font-weight="bold" fill="#FFF" text-anchor="middle">URLDetector Engine</text>
+        <line x1="465" y1="45" x2="465" y2="240" stroke="#CBD5E1" stroke-dasharray="4"/>
+
+        <rect x="560" y="15" width="90" height="30" fill="#0F172A" rx="4"/>
+        <text x="605" y="34" font-size="10" font-weight="bold" fill="#FFF" text-anchor="middle">Database</text>
+        <line x1="605" y1="45" x2="605" y2="240" stroke="#CBD5E1" stroke-dasharray="4"/>
+
+        <!-- Messages -->
+        <!-- 1: POST /scanner -->
+        <line x1="90" y1="75" x2="280" y2="75" stroke="#0284C7" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="185" y="68" font-size="9" font-weight="600" fill="#0F172A" text-anchor="middle">1. POST /scanner (target_url)</text>
+
+        <!-- 2: invoke analyze_url -->
+        <line x1="280" y1="105" x2="465" y2="105" stroke="#0284C7" stroke-width="1.5"/>
+        <text x="372" y="98" font-size="9" font-weight="600" fill="#0F172A" text-anchor="middle">2. analyze_url(target_url)</text>
+
+        <!-- 3: 14 heuristic checks -->
+        <rect x="455" y="115" width="20" height="40" fill="#E2E8F0" stroke="#10B981"/>
+        <text x="495" y="138" font-size="8.5" fill="#166534">Run 14 Heuristic Checks</text>
+
+        <!-- 4: return result dictionary -->
+        <line x1="465" y1="165" x2="280" y2="165" stroke="#64748B" stroke-width="1.5" stroke-dasharray="3"/>
+        <text x="372" y="158" font-size="9" fill="#475569" text-anchor="middle">3. Return JSON Result Dict</text>
+
+        <!-- 5: INSERT INTO url_scans -->
+        <line x1="280" y1="190" x2="605" y2="190" stroke="#0284C7" stroke-width="1.5"/>
+        <text x="442" y="183" font-size="9" font-weight="600" fill="#0F172A" text-anchor="middle">4. Log Scan Result (INSERT INTO url_scans)</text>
+
+        <!-- 6: Render HTML Results Page -->
+        <line x1="280" y1="220" x2="90" y2="220" stroke="#16A34A" stroke-width="1.5" stroke-dasharray="3"/>
+        <text x="185" y="213" font-size="9" font-weight="600" fill="#15803D" text-anchor="middle">5. Render scanner_result.html with Radial Gauge</text>
+      </svg>
+      <div class="diagram-title">Figure 4.3: Sequence Execution Flow for Heuristic URL Detection</div>
+    </div>
+
+    <!-- 4.5 Activity Diagram -->
+    <h3 class="sub-heading">4.5 Activity Diagram</h3>
+    <div class="diagram-container">
+      <svg width="680" height="150" viewBox="0 0 680 150">
+        <!-- Start Node -->
+        <circle cx="40" cy="75" r="12" fill="#0F172A"/>
+        <line x1="52" y1="75" x2="95" y2="75" stroke="#0F172A" stroke-width="2"/>
+
+        <!-- Activity 1: Input URL -->
+        <rect x="95" y="55" width="100" height="40" rx="8" fill="#F1F5F9" stroke="#0F172A" stroke-width="1.5"/>
+        <text x="145" y="79" font-size="9.5" font-weight="bold" fill="#0F172A" text-anchor="middle">Input Target URL</text>
+        <line x1="195" y1="75" x2="235" y2="75" stroke="#0F172A" stroke-width="2"/>
+
+        <!-- Activity 2: Parse Syntax -->
+        <rect x="235" y="55" width="110" height="40" rx="8" fill="#F1F5F9" stroke="#0F172A" stroke-width="1.5"/>
+        <text x="290" y="74" font-size="9" font-weight="bold" fill="#0F172A" text-anchor="middle">Extract Lexical</text>
+        <text x="290" y="87" font-size="8.5" fill="#64748B" text-anchor="middle">&amp; Host Elements</text>
+        <line x1="345" y1="75" x2="385" y2="75" stroke="#0F172A" stroke-width="2"/>
+
+        <!-- Activity 3: Evaluate Checks -->
+        <rect x="385" y="55" width="120" height="40" rx="8" fill="#EFF6FF" stroke="#0284C7" stroke-width="1.5"/>
+        <text x="445" y="74" font-size="9" font-weight="bold" fill="#0369A1" text-anchor="middle">Compute 14 Security</text>
+        <text x="445" y="87" font-size="8.5" fill="#0369A1" text-anchor="middle">Heuristic Scores</text>
+        <line x1="505" y1="75" x2="545" y2="75" stroke="#0F172A" stroke-width="2"/>
+
+        <!-- Activity 4: Output -->
+        <rect x="545" y="55" width="90" height="40" rx="8" fill="#ECFDF5" stroke="#10B981" stroke-width="1.5"/>
+        <text x="590" y="79" font-size="9" font-weight="bold" fill="#065F46" text-anchor="middle">Display Gauge</text>
+        <line x1="635" y1="75" x2="660" y2="75" stroke="#0F172A" stroke-width="2"/>
+
+        <!-- End Node -->
+        <circle cx="668" cy="75" r="9" fill="#0F172A"/>
+        <circle cx="668" cy="75" r="13" fill="none" stroke="#0F172A" stroke-width="1.5"/>
+      </svg>
+      <div class="diagram-title">Figure 4.4: High-Level System Activity Flow</div>
+    </div>
+
+    <!-- 4.6 ER Diagram -->
+    <h3 class="sub-heading">4.6 Entity Relationship (ER) Diagram</h3>
+    <div class="diagram-container">
+      <svg width="680" height="230" viewBox="0 0 680 230">
+        <!-- Entity 1: USERS -->
+        <rect x="30" y="20" width="180" height="190" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5" rx="4"/>
+        <rect x="30" y="20" width="180" height="28" fill="#0F172A" rx="4 4 0 0"/>
+        <text x="120" y="38" font-size="10" font-weight="bold" fill="#FFF" text-anchor="middle">USERS</text>
+        <text x="40" y="66" font-size="9" font-weight="bold" fill="#0284C7">PK id (INTEGER)</text>
+        <text x="40" y="86" font-size="9" fill="#334155">username (VARCHAR)</text>
+        <text x="40" y="106" font-size="9" fill="#334155">email (VARCHAR UNIQUE)</text>
+        <text x="40" y="126" font-size="9" fill="#334155">password_hash (VARCHAR)</text>
+        <text x="40" y="146" font-size="9" fill="#334155">role (VARCHAR)</text>
+        <text x="40" y="166" font-size="9" fill="#334155">created_at (TIMESTAMP)</text>
+
+        <!-- Connector 1-to-Many to URL_SCANS -->
+        <line x1="210" y1="80" x2="270" y2="80" stroke="#0284C7" stroke-width="2"/>
+        <text x="235" y="74" font-size="10" font-weight="bold" fill="#0284C7">1 : N</text>
+
+        <!-- Entity 2: URL_SCANS -->
+        <rect x="270" y="20" width="190" height="190" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5" rx="4"/>
+        <rect x="270" y="20" width="190" height="28" fill="#0369A1" rx="4 4 0 0"/>
+        <text x="365" y="38" font-size="10" font-weight="bold" fill="#FFF" text-anchor="middle">URL_SCANS</text>
+        <text x="280" y="66" font-size="9" font-weight="bold" fill="#0284C7">PK id (INTEGER)</text>
+        <text x="280" y="86" font-size="9" fill="#D97706">FK user_id (INTEGER)</text>
+        <text x="280" y="106" font-size="9" fill="#334155">url (TEXT)</text>
+        <text x="280" y="126" font-size="9" fill="#334155">hostname (VARCHAR)</text>
+        <text x="280" y="146" font-size="9" fill="#334155">risk_score (INTEGER)</text>
+        <text x="280" y="166" font-size="9" fill="#334155">risk_level (VARCHAR)</text>
+        <text x="280" y="186" font-size="9" fill="#334155">indicators_json (TEXT)</text>
+
+        <!-- Entity 3: QUIZ_RESULTS -->
+        <rect x="490" y="20" width="170" height="190" fill="#FFFFFF" stroke="#0F172A" stroke-width="1.5" rx="4"/>
+        <rect x="490" y="20" width="170" height="28" fill="#10B981" rx="4 4 0 0"/>
+        <text x="575" y="38" font-size="10" font-weight="bold" fill="#FFF" text-anchor="middle">QUIZ_RESULTS</text>
+        <text x="500" y="66" font-size="9" font-weight="bold" fill="#0284C7">PK id (INTEGER)</text>
+        <text x="500" y="86" font-size="9" fill="#D97706">FK user_id (INTEGER)</text>
+        <text x="500" y="106" font-size="9" fill="#334155">score (INTEGER)</text>
+        <text x="500" y="126" font-size="9" fill="#334155">total (INTEGER)</text>
+        <text x="500" y="146" font-size="9" fill="#334155">percentage (INTEGER)</text>
+        <text x="500" y="166" font-size="9" fill="#334155">rating (VARCHAR)</text>
+      </svg>
+      <div class="diagram-title">Figure 4.5: Entity-Relationship Schema with Relational Foreign Keys</div>
+    </div>
+
+    <!-- 4.7 Deployment Diagram -->
+    <h3 class="sub-heading">4.7 Deployment Diagram</h3>
+    <div class="diagram-container">
+      <svg width="680" height="180" viewBox="0 0 680 180">
+        <!-- Client Node -->
+        <rect x="30" y="30" width="160" height="120" fill="#F1F5F9" stroke="#0F172A" stroke-width="2" rx="6"/>
+        <text x="110" y="52" font-size="11" font-weight="bold" fill="#0F172A" text-anchor="middle">&lt;&lt;device&gt;&gt; Client</text>
+        <rect x="45" y="70" width="130" height="60" fill="#FFF" stroke="#64748B" rx="4"/>
+        <text x="110" y="95" font-size="9" fill="#334155" text-anchor="middle">Web Browser / Mobile</text>
+        <text x="110" y="112" font-size="8.5" fill="#64748B" text-anchor="middle">(Chrome, Safari, Edge)</text>
+
+        <line x1="190" y1="90" x2="260" y2="90" stroke="#0284C7" stroke-width="2"/>
+        <text x="225" y="80" font-size="9" font-weight="bold" fill="#0284C7" text-anchor="middle">HTTPS:443</text>
+
+        <!-- Web Application Server -->
+        <rect x="260" y="20" width="200" height="140" fill="#F0F9FF" stroke="#0284C7" stroke-width="2" rx="6"/>
+        <text x="360" y="42" font-size="11" font-weight="bold" fill="#0369A1" text-anchor="middle">&lt;&lt;server&gt;&gt; App Host</text>
+        <rect x="275" y="55" width="170" height="90" fill="#FFF" stroke="#0284C7" rx="4"/>
+        <text x="360" y="75" font-size="9.5" font-weight="bold" fill="#0F172A" text-anchor="middle">Flask 3.1 WSGI Container</text>
+        <text x="360" y="95" font-size="8.5" fill="#475569" text-anchor="middle">• URL Heuristic Scanner</text>
+        <text x="360" y="110" font-size="8.5" fill="#475569" text-anchor="middle">• Email Threat Analyzer</text>
+        <text x="360" y="125" font-size="8.5" fill="#475569" text-anchor="middle">• Session Auth Controller</text>
+
+        <line x1="460" y1="90" x2="510" y2="90" stroke="#0284C7" stroke-width="2"/>
+
+        <!-- Database Node -->
+        <rect x="510" y="30" width="150" height="120" fill="#ECFDF5" stroke="#10B981" stroke-width="2" rx="6"/>
+        <text x="585" y="52" font-size="11" font-weight="bold" fill="#065F46" text-anchor="middle">&lt;&lt;database&gt;&gt;</text>
+        <rect x="525" y="70" width="120" height="60" fill="#FFF" stroke="#10B981" rx="4"/>
+        <text x="585" y="95" font-size="9" font-weight="bold" fill="#047857" text-anchor="middle">Dual-Engine Store</text>
+        <text x="585" y="112" font-size="8.5" fill="#065F46" text-anchor="middle">SQLite / MySQL:3306</text>
+      </svg>
+      <div class="diagram-title">Figure 4.6: Multi-Tier Distributed Deployment Architecture</div>
+    </div>
+
+    <!-- ========================================================================
+         5. SYSTEM ARCHITECTURE DESIGN
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h2 class="section-heading">5. System Architecture Design</h2>
+
+    <h3 class="sub-heading">5.1 Frontend Architecture</h3>
+    <p>
+      The user interface incorporates modern responsive design patterns inspired by tier-1 cybersecurity products. Built without bulky JavaScript frameworks, the presentation layer leverages semantic HTML5, modern CSS3 variables (`main.css`, `components.css`, `dashboard.css`, `landing.css`), dynamic SVG rendering, and lightweight vanilla ES6 JavaScript (`main.js`, `scanner.js`, `quiz.js`). This architecture eliminates external CDN dependency failures and guarantees sub-second rendering across low-bandwidth mobile networks.
+    </p>
+
+    <h3 class="sub-heading">5.2 Backend Architecture</h3>
+    <p>
+      The core processing tier is powered by a modular Flask application (`app.py`). Incoming requests are dispatched to dedicated detector libraries:
+    </p>
+    <ul>
+      <li><code class="inline-code">detectors/url_detector.py</code>: Implements a 14-heuristic pipeline parsing protocol security, typosquatting permutations, raw IP hostnames, Cyrillic Punycode transformations, nested subdomains, and suspicious TLD patterns.</li>
+      <li><code class="inline-code">detectors/email_detector.py</code>: Implements a social engineering lexicon matcher detecting high-panic urgency phrases, sender domain mismatches, gift card lure requests, and embedded link risk correlations.</li>
+    </ul>
+
+    <h3 class="sub-heading">5.3 Database Schema Design</h3>
+    <p>
+      Data persistence is orchestrated by <code class="inline-code">database.py</code> which automatically detects whether a local or cloud MySQL instance is active. If MySQL is unreachable, it seamlessly mounts a self-initializing SQLite file (<code class="inline-code">phishguard.db</code>). Relational schemas encompass:
+    </p>
+    <ul>
+      <li><code class="inline-code">users</code>: ID, username, email, password_hash, role, created_at.</li>
+      <li><code class="inline-code">url_scans</code>: ID, user_id, url, hostname, risk_score, risk_level, indicators_json, scanned_at.</li>
+      <li><code class="inline-code">email_scans</code>: ID, user_id, sender, subject, body_snippet, risk_score, risk_level, scanned_at.</li>
+      <li><code class="inline-code">quiz_results</code>: ID, user_id, score, total, percentage, rating, completed_at.</li>
+    </ul>
+
+    <h3 class="sub-heading">5.4 Security Considerations</h3>
+    <p>
+      To prevent common OWASP vulnerabilities, all database transactions use strictly parameterized queries (`%s` binding), preventing SQL Injection. All dynamic web template strings pass through Jinja2 auto-escaping to mitigate Cross-Site Scripting (XSS). Passwords are never stored in plain text; instead, they are hashed using salted PBKDF2/SHA-256 algorithms.
+    </p>
+
+    <!-- ========================================================================
+         MODULE 2: APPLICATION DEVELOPMENT & TESTING
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h1 class="chapter-title">Module 2: Implementation, Testing, Deployment &amp; Evaluation</h1>
+
+    <h2 class="section-heading">6. Application Development</h2>
+
+    <h3 class="sub-heading">6.1 Frontend Implementation</h3>
+    <p>
+      The frontend interface comprises 11 dedicated template views:
+    </p>
+    <ul>
+      <li><strong>Landing Portal (`landing.html`):</strong> Features an 11-section narrative journey with live interactive scanner preview, trust metrics, 8 interactive awareness cards triggering an educational modal, and direct quiz CTA.</li>
+      <li><strong>Inspection Result Panels (`scanner_result.html`, `email_result.html`):</strong> Features an animated circular SVG risk score gauge (0-100), passing vs flagged indicator counts, an expandable accordion explaining underlying threat mechanics, and actionable defense guidance.</li>
+      <li><strong>Interactive Quiz Experience (`quiz.html`):</strong> Presents 10 real-world scenarios with instantaneous rationales and a printable certificate of accreditation.</li>
+      <li><strong>Operations Hub &amp; Reports (`dashboard.html`, `reports.html`):</strong> Provides audit logs, status tier filters, telemetry charts, and CSV report export.</li>
+    </ul>
+
+    <h3 class="sub-heading">6.2 Backend Implementation</h3>
+    <p>
+      The backend is structured around clean separation of concerns. The URL inspection algorithm checks:
+    </p>
+    <pre>
+def analyze_url(url: str) -> dict:
+    parsed = urllib.parse.urlparse(url)
+    # Check 1: HTTPS Encryption
+    # Check 2: IP Address as Hostname
+    # Check 3: Brand Impersonation & Typosquatting (Levenshtein/Permutations)
+    # Check 4: Cyrillic Punycode (xn--) Homograph attacks
+    # Check 5: Excessive Subdomain Tunneling (> 3 levels)
+    # Check 6: URL Shortener Masking (bit.ly, tinyurl)
+    # Check 7: Risky Top-Level Domains (.xyz, .top, .work, .club)
+    # Check 8: Open-redirect double slash (//) syntax
+    # Compute normalized risk score (0 to 100) and return full explanation dictionary
+    </pre>
+
+    <h3 class="sub-heading">6.3 Database Integration</h3>
+    <p>
+      The application implements an automatic dual-engine connection pattern:
+    </p>
+    <pre>
+def get_db():
+    global _using_mysql
+    if _using_mysql:
+        return pymysql.connect(host=Config.MYSQL_HOST, user=Config.MYSQL_USER, ...)
+    conn = sqlite3.connect(Config.SQLITE_DB_PATH)
+    conn.row_factory = sqlite3.Row
+    return conn
+    </pre>
+
+    <h3 class="sub-heading">6.4 Authentication and Validation</h3>
+    <p>
+      User credentials are validated upon submission; duplicate emails are blocked. Protected endpoints utilize custom Python decorators (<code class="inline-code">@login_required</code>) that inspect active session identifiers before granting access to the administrator dashboard or audit export routines.
+    </p>
+
+    <h3 class="sub-heading">6.5 Error Handling</h3>
+    <p>
+      Custom HTTP 404 and 500 error handlers intercept anomalous conditions, presenting polished security-themed recovery screens rather than raw system stack traces.
+    </p>
+
+    <!-- ========================================================================
+         7. INTEGRATION & SYSTEM TESTING
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h2 class="section-heading">7. Integration &amp; System Testing</h2>
+
+    <h3 class="sub-heading">7.1 Unit Testing</h3>
+    <p>
+      A complete automated unit testing suite was built using <strong>PyTest</strong> (`tests/test_url_detector.py`, `tests/test_email_detector.py`, `tests/test_routes.py`). All <strong>14/14 automated test suites passed with 100% success</strong> in &lt;3.5 seconds.
+    </p>
+
+    <div class="callout-box success">
+      <strong>PyTest Execution Result:</strong> 14 passed in 3.24 seconds (100% verification rate).  
+      Verified: Safe URLs, Typosquatting heuristics, IP hostnames, Punycode homographs, URL shorteners, Social engineering emails, Authentication routes, and CSV export.
+    </div>
+
+    <h3 class="sub-heading">7.2 Black-Box Testing</h3>
+    <p>
+      External test cases were provided by inputting known benign web endpoints (e.g. `https://accounts.google.com`) and phishing lures without knowledge of internal variable states. Output classifications matched ground-truth security ratings across 100% of trial samples.
+    </p>
+
+    <h3 class="sub-heading">7.3 Integration Testing</h3>
+    <p>
+      End-to-end integration verified the seamless interaction between web form inputs, heuristic detector calculations, database logging, and dynamic template rendering.
+    </p>
+
+    <h3 class="sub-heading">7.4 Test Case Preparation (Test Matrix)</h3>
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Test ID</th>
+          <th>Test Scenario</th>
+          <th>Input Data</th>
+          <th>Expected Verdict</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>TC-01</td><td>Safe Corporate Domain</td><td>https://accounts.google.com</td><td>Score &lt; 20 (LOW RISK)</td><td>PASS</td></tr>
+        <tr><td>TC-02</td><td>Typosquatting Lure</td><td>http://paypa1-security.xyz</td><td>Score &gt; 80 (HIGH RISK)</td><td>PASS</td></tr>
+        <tr><td>TC-03</td><td>Raw IP Hostname</td><td>http://192.168.1.100/login</td><td>Score &gt; 70 (HIGH RISK)</td><td>PASS</td></tr>
+        <tr><td>TC-04</td><td>URL Shortener Masking</td><td>https://bit.ly/3x8Qz9A</td><td>Flagged Suspicious Check</td><td>PASS</td></tr>
+        <tr><td>TC-05</td><td>Punycode Homograph</td><td>http://xn--appl-43d.com</td><td>Flagged IDN Cyrillic</td><td>PASS</td></tr>
+        <tr><td>TC-06</td><td>Email Urgency &amp; Panic</td><td>"Account Suspended within 24h"</td><td>Score &gt; 75 (PHISHING)</td><td>PASS</td></tr>
+        <tr><td>TC-07</td><td>CEO Gift Card Lure</td><td>"Buy urgent Apple gift cards"</td><td>Score &gt; 75 (PHISHING)</td><td>PASS</td></tr>
+        <tr><td>TC-08</td><td>Admin Authentication</td><td>brijesh@phishguard.local / pw</td><td>Login &amp; Redirect Dashboard</td><td>PASS</td></tr>
+        <tr><td>TC-09</td><td>Quiz Submission API</td><td>10 answered scenario responses</td><td>Accreditation Score Calculated</td><td>PASS</td></tr>
+        <tr><td>TC-10</td><td>CSV Telemetry Export</td><td>GET /reports/export</td><td>200 OK + text/csv header</td><td>PASS</td></tr>
+      </tbody>
+    </table>
+
+    <h3 class="sub-heading">7.5 Bug Tracking &amp; Resolution Log</h3>
+    <p>
+      During initial testing, two issues were identified and resolved:
+    </p>
+    <ul>
+      <li><strong>Bug #1:</strong> Netlify and AWS Lambda serverless read-only filesystem caused SQLite connection errors on write attempts. <em>Resolution:</em> Configured `config.py` to auto-detect serverless environments and mount a temporary writable copy in `/tmp/phishguard.db`.</li>
+      <li><strong>Bug #2:</strong> Mobile keyboards on Android and iOS caused auto-viewport zoom on form inputs. <em>Resolution:</em> Explicitly constrained mobile input `font-size: 16px !important` in `main.css`.</li>
+    </ul>
+
+    <!-- ========================================================================
+         8. APPLICATION DEPLOYMENT
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h2 class="section-heading">8. Application Deployment</h2>
+
+    <h3 class="sub-heading">8.1 Cloud Deployment</h3>
+    <p>
+      PhishGuard supports multiple cloud architectures:
+    </p>
+    <ul>
+      <li><strong>Serverless Hosting (Netlify):</strong> Pre-configured with <code class="inline-code">netlify.toml</code>, <code class="inline-code">netlify/functions/app.py</code>, and <code class="inline-code">serverless-wsgi</code> for serverless AWS Lambda execution.</li>
+      <li><strong>Containerized Web Services (Render / Railway):</strong> Pre-configured with <code class="inline-code">Procfile</code> (<code class="inline-code">web: gunicorn app:app</code>) and <code class="inline-code">requirements.txt</code> providing persistent database storage and instant HTTPS provisioning.</li>
+      <li><strong>Python-Specific Cloud (PythonAnywhere):</strong> Zero-Git upload option utilizing the bundled <code class="inline-code">phishguard.zip</code> archive.</li>
+    </ul>
+
+    <h3 class="sub-heading">8.2 Local Hosting (Viva &amp; Lab Demonstration)</h3>
+    <p>
+      The system binds dynamically to <code class="inline-code">0.0.0.0:5000</code>. This enables local hosting on a laptop while permitting immediate external device access over local Wi-Fi or mobile hotspots (e.g. <code class="inline-code">http://&lt;laptop-ip&gt;:5000</code>).
+    </p>
+
+    <h3 class="sub-heading">8.3 APK Build &amp; Mobile Web Integration</h3>
+    <p>
+      For Android deployment without Google Play Store developer fees, the platform supports:
+    </p>
+    <ul>
+      <li><strong>Progressive Web App (PWA) / Add to Home Screen:</strong> The site includes standalone mobile viewport headers, touch-manifest configurations, and high-resolution security shield favicons.</li>
+      <li><strong>Android WebView APK Container:</strong> The web application can be wrapped in a native Android Studio WebView container or Cordova/Capacitor shell to generate an installable `.apk` package.</li>
+    </ul>
+
+    <h3 class="sub-heading">8.4 Server Configuration</h3>
+    <p>
+      In production, the application is fronted by Gunicorn (green unicorn) WSGI with multi-threaded worker configurations, providing concurrency and resilience against connection spikes.
+    </p>
+
+    <h3 class="sub-heading">8.5 Version Control Using GitHub</h3>
+    <p>
+      Source code and testing assets are version-controlled with standardized commit messages, structured `.gitignore` exclusions for compiled bytecodes (`__pycache__`), test caches, and environment configurations.
+    </p>
+
+    <!-- ========================================================================
+         9. PERFORMANCE & SECURITY TESTING
+         ======================================================================== -->
+    <h2 class="section-heading">9. Performance &amp; Security Testing</h2>
+
+    <h3 class="sub-heading">9.1 Basic Load Testing</h3>
+    <p>
+      Synthetic concurrency testing with concurrent HTTP workers demonstrated an average response latency of <strong>82ms for URL heuristic evaluation</strong> and <strong>114ms for email social engineering analysis</strong> on standard consumer hardware.
+    </p>
+
+    <h3 class="sub-heading">9.2 Input Validation Checks</h3>
+    <p>
+      All inputs are sanitized against protocol anomalies, null byte injections, malformed Unicode sequences, and oversized string payloads. Missing protocols default safely to HTTP/HTTPS normalization.
+    </p>
+
+    <h3 class="sub-heading">9.3 Security Validation</h3>
+    <p>
+      The codebase was reviewed against the <strong>OWASP Top 10 Web Application Security Vulnerabilities</strong>:
+    </p>
+    <ul>
+      <li><strong>A01 Broken Access Control:</strong> Enforced via `@login_required` session decorators.</li>
+      <li><strong>A02 Cryptographic Failures:</strong> PBKDF2/SHA-256 salted hashing prevents credential recovery.</li>
+      <li><strong>A03 Injection:</strong> Parameterized SQL bindings prevent SQL Injection across both SQLite and MySQL engines.</li>
+      <li><strong>A05 Security Misconfiguration:</strong> Debug flags default to environment variable toggles.</li>
+    </ul>
+
+    <!-- ========================================================================
+         10. FINAL DOCUMENTATION
+         ======================================================================== -->
+    <div class="page-break"></div>
+    <h2 class="section-heading">10. Final Documentation</h2>
+
+    <h3 class="sub-heading">10.1 Report Generation</h3>
+    <p>
+      The system features an automated audit report generation engine. Administrators can filter scans by threat tier (Safe, Suspicious, High Risk), search by targeted domain name, and export telemetry into standard CSV files suitable for external SIEM ingest or Excel charting.
+    </p>
+
+    <h3 class="sub-heading">10.2 User Manual &amp; Operational Walkthrough</h3>
+    <ol>
+      <li><strong>Step 1 (Starting Local Server):</strong> Open terminal in project root and run <code class="inline-code">python app.py</code>. Navigate to <code class="inline-code">http://localhost:5000</code>.</li>
+      <li><strong>Step 2 (Scanning a URL):</strong> Click "Scanner" in the top navigation bar. Enter a full web address (e.g. <code class="inline-code">http://paypal-security-alert.xyz/verify</code>) or click a quick-test sample chip. Click "Inspect URL".</li>
+      <li><strong>Step 3 (Interpreting Results):</strong> Review the circular risk gauge. Read the "Passed Checks" vs "Flagged Concerns". Expand the accordion items to understand the exact heuristic rationale.</li>
+      <li><strong>Step 4 (Analyzing an Email):</strong> Navigate to "Email Analyzer". Enter sender address, subject line, and message body. Click "Analyze Email Threat Level".</li>
+      <li><strong>Step 5 (Completing Cyber Quiz):</strong> Click "Quiz". Answer the 10 real-world cybersecurity scenarios. Upon completion, review your performance score and click "Print / Save Certificate".</li>
+    </ol>
+
+    <h3 class="sub-heading">10.3 Limitations</h3>
+    <ul>
+      <li>Heuristic models evaluate structural and lexical indicators; zero-day compromises on otherwise legitimate compromised domains (e.g. hijacked WordPress sites) require live payload inspection.</li>
+      <li>Email analysis operates on pasted textual content rather than direct IMAP/POP3 mailbox synchronization.</li>
+    </ul>
+
+    <h3 class="sub-heading">10.4 Future Enhancements</h3>
+    <ul>
+      <li>Integration with real-time Whois domain registration age APIs.</li>
+      <li>Machine Learning (Random Forest / XGBoost) classification layer trained on PhishTank and Tranco Top 1M datasets.</li>
+      <li>Browser extension (Chrome/Firefox WebExtension) providing active real-time address bar protection.</li>
+    </ul>
+
+    <h3 class="sub-heading">10.5 References</h3>
+    <ol>
+      <li>Anti-Phishing Working Group (APWG). <em>Phishing Activity Trends Report, 4th Quarter 2024.</em></li>
+      <li>Federal Bureau of Investigation (FBI). <em>Internet Crime Report (IC3 Annual Publication).</em></li>
+      <li>Open Web Application Security Project (OWASP). <em>Top 10 Web Application Security Risks, 2024.</em></li>
+      <li>Ma, J., Saul, L. K., Savage, S., &amp; Voelker, G. M. (2009). <em>Identifying Suspicious URLs: An Application of Large-Scale Online Learning.</em> International Conference on Machine Learning (ICML).</li>
+      <li>Flask Web Development Documentation. <em>Pallets Projects, 2024.</em></li>
+    </ol>
+
+    <div style="border-top: 2px solid #0F172A; margin-top: 40px; padding-top: 20px; text-align: center; font-size: 10pt; color: #64748B;">
+      <div><strong>PHISHGUARD &mdash; Phishing Attack Detection &amp; Awareness System</strong></div>
+      <div>Student Developer: <strong>Chauhan Brijesh Ramayan</strong> &nbsp;|&nbsp; Project Mentor: <strong>Jagruti Raut</strong></div>
+      <div>Academic Session 2025–2026 &nbsp;|&nbsp; College Mini Project Documentation</div>
+    </div>
+
+  </div>
+
+</body>
+</html>

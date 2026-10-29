@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block title %}Email Inspection Result - PHISHGUARD{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 50px; padding-bottom: 80px;">
+  <div class="container container-narrow">
+
+    <!-- Top Action Breadcrumb -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+      <a href="{{ url_for('email_view') }}" class="btn btn-outline btn-sm">
+        &larr; Analyze Another Email
+      </a>
+      <div style="font-size: 0.85rem; color: var(--text-muted); word-break: break-all;">
+        Origin Domain: <span style="font-family: var(--font-mono); font-weight: 600; color: var(--primary);">{{ result.sender_domain or 'Unspecified' }}</span>
+      </div>
+    </div>
+
+    <!-- Main Results Hero Card -->
+    <div class="checks-card" style="padding: 40px; text-align: center;">
+      <div class="section-tag mx-auto">Email Security Assessment</div>
+
+      <!-- Email Summary Card -->
+      <div style="background: var(--bg-light); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 18px 24px; text-align: left; margin: 20px auto 32px auto; max-width: 680px;">
+        <div style="font-size: 0.9rem; margin-bottom: 6px;">
+          <strong style="color: var(--primary);">Sender:</strong>
+          <span style="font-family: var(--font-mono); color: var(--text-main);">{{ result.sender }}</span>
+        </div>
+        <div style="font-size: 0.9rem; margin-bottom: 10px;">
+          <strong style="color: var(--primary);">Subject:</strong>
+          <span>{{ result.subject }}</span>
+        </div>
+        <div style="font-size: 0.86rem; color: var(--text-muted); border-top: 1px dashed var(--border-light); padding-top: 8px;">
+          <strong>Snippet:</strong> "{{ result.body_snippet }}"
+        </div>
+      </div>
+
+      <!-- Circular Radial Risk Gauge -->
+      <div class="risk-meter-wrapper">
+        <svg viewBox="0 0 36 36" class="circular-chart">
+          <path class="circle-bg"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path class="circle-arc"
+            stroke-dasharray="0, 100"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <div class="risk-meter-inner">
+          <div class="gauge-score-value" id="gaugeScore" data-score="{{ result.risk_score }}">
+            {{ result.risk_score }}
+          </div>
+          <div class="gauge-score-max">/ 100</div>
+          <div class="gauge-level-badge">
+            <span class="badge badge-{{ result.risk_badge }}">
+              {{ result.risk_level }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px; font-size: 1.05rem; color: var(--text-muted); max-width: 580px; margin-left: auto; margin-right: auto;">
+        Threat detection engine evaluated header integrity, psychological coercion, credential prompts, and embedded URLs.
+      </p>
+    </div>
+
+    <!-- Extracted URLs Telemetry (if links were found) -->
+    {% if result.extracted_urls %}
+      <div class="checks-card" style="margin-top: 32px;">
+        <div class="checks-card-header">
+          <div class="checks-card-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+            Correlated Embedded Links Inspection
+          </div>
+          <span class="badge badge-info">{{ result.extracted_urls|length }} Links Found</span>
+        </div>
+
+        <div>
+          {% for u in result.extracted_urls %}
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; background: var(--bg-light); border-radius: var(--radius-md); margin-bottom: 8px; flex-wrap: wrap; gap: 8px;">
+              <span style="font-family: var(--font-mono); font-size: 0.88rem; color: var(--text-main); word-break: break-all;">
+                {{ u.url }}
+              </span>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <span class="badge badge-{{ u.badge }}">
+                  Score: {{ u.score }}/100 - {{ u.level }}
+                </span>
+                <a href="{{ url_for('scanner_view', url=u.url) }}" class="btn btn-outline btn-sm" style="padding: 4px 10px; font-size: 0.78rem;">
+                  Deep Inspect &rarr;
+                </a>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Detected Indicators & Detailed Analysis Breakdown -->
+    <div class="accordion-wrapper">
+      <div class="accordion-title-bar">
+        <h3>Detected Indicators &amp; Analysis Explanation</h3>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">{{ result.indicators|length }} Analytical Signals Logged</span>
+      </div>
+
+      {% for ind in result.indicators %}
+        <div class="accordion-item {% if ind.status in ['danger', 'warning'] %}active{% endif %}">
+          <div class="accordion-header">
+            <div class="accordion-header-left">
+              <span class="badge badge-{{ ind.status if ind.status != 'pass' else 'success' }}">
+                {{ ind.status|upper }}
+              </span>
+              <span class="indicator-title-text">{{ ind.name }}</span>
+            </div>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="accordion-content">
+            <p>{{ ind.description }}</p>
+            {% if ind.value %}
+              <div style="margin-top: 6px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--primary-accent);">
+                Detected Match: "{{ ind.value }}"
+              </div>
+            {% endif %}
+            {% if ind.rationale %}
+              <div class="rationale-callout">
+                <strong>Why This Matters:</strong> {{ ind.rationale }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Safety Recommendation Card -->
+    <div class="recommendation-card {{ result.risk_badge }}">
+      <div class="recommendation-icon">
+        {% if result.risk_badge == 'danger' %}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        {% elif result.risk_badge == 'warning' %}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        {% else %}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        {% endif %}
+      </div>
+      <div class="recommendation-content">
+        <h4>Actionable Defense Recommendation</h4>
+        <p>{{ result.recommendation }}</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+{% endblock %}

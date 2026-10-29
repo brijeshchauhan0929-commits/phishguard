@@ -1,0 +1,26 @@
+[build]
+  functions = "netlify/functions"
+  publish = "static"
+
+[functions]
+  included_files = [
+    "templates/**",
+    "static/**",
+    "detectors/**",
+    "phishguard.db",
+    "schema.sql",
+    "config.py",
+    "database.py",
+    "app.py"
+  ]
+
+[[redirects]]
+  from = "/static/*"
+  to = "/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/app"
+  status = 200
+  force = false

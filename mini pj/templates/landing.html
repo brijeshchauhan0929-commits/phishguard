@@ -1,0 +1,722 @@
+{% extends "base.html" %}
+
+{% block title %}PHISHGUARD - Phishing Attack Detection & Awareness System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================================================
+     SECTION 2 — HERO SECTION
+     ========================================================================== -->
+<section class="hero-section">
+  <div class="container hero-grid">
+    <!-- Left Hero Copy -->
+    <div>
+      <div class="section-tag">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Explainable Threat Defense v2.4
+      </div>
+      <h1 class="hero-heading">
+        Detect Phishing.<br>
+        <span class="gradient-text">Build Cyber Awareness.</span>
+      </h1>
+      <p class="hero-description">
+        Analyze suspicious URLs and emails, understand deceptive cyber threat vectors, and master the digital defense habits needed to stay secure online.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="{{ url_for('scanner_view') }}" class="btn btn-accent btn-lg">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          Scan a URL
+        </a>
+        <a href="{{ url_for('awareness_view') }}" class="btn btn-outline btn-lg">
+          Explore Awareness
+        </a>
+      </div>
+
+      <!-- Trust Badges Row -->
+      <div class="hero-trust-row">
+        <div class="hero-trust-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Multi-Layer Lexical Heuristics</span>
+        </div>
+        <div class="hero-trust-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <span>Zero-Trust Explainability</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Hero Cybersecurity Visual Display -->
+    <div class="hero-visual-card">
+      <div class="terminal-header">
+        <div class="terminal-dots">
+          <div class="terminal-dot dot-red"></div>
+          <div class="terminal-dot dot-yellow"></div>
+          <div class="terminal-dot dot-green"></div>
+        </div>
+        <div class="terminal-status">
+          <span class="pulse-dot"></span>
+          REAL-TIME TELEMETRY ACTIVE
+        </div>
+      </div>
+
+      <!-- Scanner Mock Bar -->
+      <div class="scanner-mock-input">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span>inspect --target "paypa1-security-login.xyz"</span>
+      </div>
+
+      <!-- Metrics Tiles -->
+      <div class="hero-metrics-grid">
+        <div class="hero-metric-tile">
+          <div class="metric-title">Risk Assessment</div>
+          <div class="metric-score alert">
+            92<span style="font-size: 0.95rem; color: #94A3B8;">/100</span>
+          </div>
+          <span class="badge badge-danger" style="margin-top: 8px;">PHISHING LIKELY</span>
+        </div>
+        <div class="hero-metric-tile">
+          <div class="metric-title">Detected Flags</div>
+          <div class="metric-score" style="color: var(--cyan-accent);">
+            04 <span style="font-size: 0.95rem; color: #94A3B8;">Anomalies</span>
+          </div>
+          <span class="badge badge-warning" style="margin-top: 8px;">Typosquatting</span>
+        </div>
+      </div>
+
+      <!-- Live Stream Feed -->
+      <div class="hero-threat-feed">
+        <div style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 4px;">
+          Active Feed Telemetry
+        </div>
+        <div class="threat-item">
+          <span class="threat-url">accounts.google.com</span>
+          <span class="badge badge-success">SAFE (12/100)</span>
+        </div>
+        <div class="threat-item">
+          <span class="threat-url">paypa1-verify-account.xyz</span>
+          <span class="badge badge-danger">BLOCKED (92/100)</span>
+        </div>
+        <div class="threat-item">
+          <span class="threat-url">bit.ly/3x8Qz9A-claim</span>
+          <span class="badge badge-warning">SUSPICIOUS (58/100)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 3 — TRUST / VALUE STATEMENT
+     ========================================================================== -->
+<section class="section" id="about">
+  <div class="container">
+    <div class="trust-statement-box">
+      <div class="section-tag section-tag-dark">Cyber Defense Imperative</div>
+      <h2 class="trust-title">
+        "Phishing attacks rely on trust.<br>
+        Awareness is your first line of defense."
+      </h2>
+      <p class="trust-subtitle">
+        Over 90% of organizational data breaches originate from psychological deception rather than raw software exploits. PhishGuard merges automated heuristic inspection with proactive user education to eliminate the threat surface.
+      </p>
+
+      <div class="trust-cards-row">
+        <div class="trust-card">
+          <div class="trust-number">91%</div>
+          <div class="trust-label">Attack Origin Vector</div>
+          <p class="trust-desc">Of advanced cyber espionage and data intrusions initiate with an innocuous-looking phishing email lure.</p>
+        </div>
+        <div class="trust-card">
+          <div class="trust-number">3.4B</div>
+          <div class="trust-label">Malicious Messages Daily</div>
+          <p class="trust-desc">Spam and phishing payloads transmitted across global networks every single 24-hour cycle.</p>
+        </div>
+        <div class="trust-card">
+          <div class="trust-number">100%</div>
+          <div class="trust-label">Explainable Intelligence</div>
+          <p class="trust-desc">Every detection is accompanied by clear, evidence-based reasoning so users learn how threats work.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 4 — HOW IT WORKS (3-Step Visual Flow)
+     ========================================================================== -->
+<section class="section section-muted">
+  <div class="container text-center">
+    <div class="section-tag mx-auto">Workflow Architecture</div>
+    <h2 class="section-title">How PhishGuard Protects You</h2>
+    <p class="section-subtitle mx-auto">
+      Three seamless steps to transform suspicious digital communications into actionable intelligence.
+    </p>
+
+    <div class="steps-container">
+      <!-- Step 01 -->
+      <div class="step-card">
+        <div class="step-badge">01</div>
+        <h3 class="step-title">Enter</h3>
+        <p class="step-desc">
+          Paste any suspicious URL, link, or email body text into our high-speed security telemetry interface for instant ingestion.
+        </p>
+      </div>
+
+      <!-- Step 02 -->
+      <div class="step-card">
+        <div class="step-badge">02</div>
+        <h3 class="step-title">Analyze</h3>
+        <p class="step-desc">
+          The engine correlates multi-point heuristics: IP hostnames, typosquatting brand checks, urgency traps, and hidden redirection chains.
+        </p>
+      </div>
+
+      <!-- Step 03 -->
+      <div class="step-card">
+        <div class="step-badge">03</div>
+        <h3 class="step-title">Understand</h3>
+        <p class="step-desc">
+          Receive a calibrated risk score (0-100), transparent indicator breakdowns, and actionable defensive safety recommendations.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 5 — CORE FEATURES (6 Large Cards)
+     ========================================================================== -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="text-center">
+      <div class="section-tag mx-auto">Capabilities Suite</div>
+      <h2 class="section-title">Built for Real-World Cyber Resilience</h2>
+      <p class="section-subtitle mx-auto">
+        Engineered with commercial-grade cybersecurity standards to provide unified threat analysis and continuous user education.
+      </p>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <h3 class="feature-heading">URL Phishing Scanner</h3>
+        <p class="feature-description">
+          Examines lexical structure, Punycode substitutions, brand spoofing, suspicious TLDs, and path obfuscation in real time.
+        </p>
+        <a href="{{ url_for('scanner_view') }}" class="feature-link">Open Scanner &rarr;</a>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        </div>
+        <h3 class="feature-heading">Email Threat Analyzer</h3>
+        <p class="feature-description">
+          Parses sender spoofing, psychological urgency triggers, credential harvesting lures, and embedded hyperlink traps.
+        </p>
+        <a href="{{ url_for('email_view') }}" class="feature-link">Analyze Email &rarr;</a>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        </div>
+        <h3 class="feature-heading">Calibrated Risk Scoring</h3>
+        <p class="feature-description">
+          Calculates a transparent 0-100 risk score with distinct confidence tiers: Low Risk, Suspicious, Possible Phishing, or Critical Threat.
+        </p>
+        <a href="{{ url_for('scanner_view') }}" class="feature-link">Explore Metrics &rarr;</a>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        </div>
+        <h3 class="feature-heading">Security Audit Reports</h3>
+        <p class="feature-description">
+          Persistent scan history logging with exportable CSV telemetry reports, filterable threat categories, and printable summaries.
+        </p>
+        <a href="{{ url_for('reports_view') }}" class="feature-link">View Reports &rarr;</a>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon></svg>
+        </div>
+        <h3 class="feature-heading">Awareness Learning Hub</h3>
+        <p class="feature-description">
+          A four-stage learning pipeline covering smishing, BEC, typosquatting, MFA fatigue, and interactive Do's &amp; Don'ts rulecards.
+        </p>
+        <a href="{{ url_for('awareness_view') }}" class="feature-link">Enter Learning Hub &rarr;</a>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card">
+        <div class="feature-icon-wrapper">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.45 1-1 1H7c-.55 0-1-.45-1-1v-2.34"></path><path d="M14 14.66V17c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-2.34"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"></path></svg>
+        </div>
+        <h3 class="feature-heading">Cybersecurity Quiz</h3>
+        <p class="feature-description">
+          Test your defense instincts across 10 realistic social engineering scenarios with instant feedback and an accreditation certificate.
+        </p>
+        <a href="{{ url_for('quiz_view') }}" class="feature-link">Start Challenge &rarr;</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 6 — URL SCANNER PREVIEW (Interactive Demonstration)
+     ========================================================================== -->
+<section class="section section-muted" id="scanner-preview">
+  <div class="container container-narrow">
+    <div class="text-center">
+      <div class="section-tag mx-auto">Interactive Engine</div>
+      <h2 class="section-title">Is that link safe?</h2>
+      <p class="section-subtitle mx-auto">
+        Test a suspicious link right now. Experience how PhishGuard decomposes URLs to identify deceptive traps.
+      </p>
+    </div>
+
+    <div class="scanner-preview-card">
+      <form action="{{ url_for('scanner_view') }}" method="GET">
+        <div class="scanner-input-group">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" name="url" id="previewUrlInput" class="scanner-input-field" placeholder="Paste a suspicious URL (e.g., https://paypa1-security-login.xyz)" value="https://accounts.google.com/signin/v2/identifier">
+          <button type="submit" id="previewAnalyzeBtn" class="btn btn-accent">Analyze URL</button>
+        </div>
+      </form>
+
+      <!-- Quick Preset Sample Chips -->
+      <div class="quick-sample-chips">
+        <span style="font-size: 0.82rem; font-weight: 700; color: var(--text-muted); margin-right: 4px;">Try Sample:</span>
+        <button type="button" class="quick-chip" data-url="https://accounts.google.com/signin/v2/identifier">✓ Safe: Google Auth</button>
+        <button type="button" class="quick-chip" data-url="http://paypa1-security-verification.xyz/login.php">⚠ Phishing: PayPal Spoof</button>
+        <button type="button" class="quick-chip" data-url="https://bit.ly/3x8Qz9A-claim-reward">⚡ Suspicious: Shortener</button>
+        <button type="button" class="quick-chip" data-url="http://192.168.1.100/secure-update/bank">⚠ Raw IP Host</button>
+      </div>
+
+      <!-- Live Demonstration Result Card -->
+      <div class="scanner-result-preview-box">
+        <div class="preview-score-pane">
+          <div class="preview-score-num">23</div>
+          <div class="preview-score-sub">/ 100 Risk Score</div>
+          <span class="badge badge-success" style="font-size: 0.85rem; padding: 6px 14px;">LOW RISK</span>
+        </div>
+        <div class="preview-checks-grid">
+          <div class="preview-check-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>HTTPS protocol active</span>
+          </div>
+          <div class="preview-check-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>Valid domain structure</span>
+          </div>
+          <div class="preview-check-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>No raw IP address</span>
+          </div>
+          <div class="preview-check-pill">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            <span>No suspicious symbols (@, //)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 7 — EMAIL ANALYZER PREVIEW
+     ========================================================================== -->
+<section class="section">
+  <div class="container container-narrow">
+    <div class="text-center">
+      <div class="section-tag mx-auto">Social Engineering Inspection</div>
+      <h2 class="section-title">Inspect Deceptive Email Payloads</h2>
+      <p class="section-subtitle mx-auto">
+        Attackers manipulate emotional urgency to bypass caution. See how PhishGuard unmasks impersonation tactics.
+      </p>
+    </div>
+
+    <div class="email-preview-card">
+      <div class="email-mock-bar">
+        <span style="font-weight: 700; font-size: 0.9rem;">THREAT ANALYSIS TELEMETRY // INCOMING MESSAGE</span>
+        <span class="badge badge-danger">FLAGGED SUSPECT</span>
+      </div>
+
+      <div class="email-mock-body">
+        <!-- Mock Email Message -->
+        <div class="mock-mail-content">
+          <div class="mail-header-row">
+            <strong>Sender:</strong> <span style="font-family: var(--font-mono); color: #EF4444;">security@example.com</span>
+          </div>
+          <div class="mail-header-row">
+            <strong>Subject:</strong> Urgent Account Verification Required Within 24 Hours
+          </div>
+          <p class="mail-body-text">
+            Dear Customer, We detected an unauthorized sign-in to your online account from a foreign device. Your access has been temporarily restricted. Please click the link below to verify your identity immediately:
+            <br><br>
+            <span style="font-family: var(--font-mono); color: #0284C7; text-decoration: underline;">http://verify-identity-login.xyz/auth</span>
+          </p>
+        </div>
+
+        <!-- Detected Indicators -->
+        <div class="mock-indicators-pane">
+          <div class="mock-flag-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <div>
+              <div style="font-weight: 700;">⚠ Urgent language detected</div>
+              <div style="font-size: 0.78rem; opacity: 0.85;">Imposes strict 24-hr deadline</div>
+            </div>
+          </div>
+          <div class="mock-flag-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <div>
+              <div style="font-weight: 700;">⚠ Account verification lure</div>
+              <div style="font-size: 0.78rem; opacity: 0.85;">Prompts for sensitive credential access</div>
+            </div>
+          </div>
+          <div class="mock-flag-item">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            <div>
+              <div style="font-weight: 700;">⚠ Suspicious Link Included</div>
+              <div style="font-size: 0.78rem; opacity: 0.85;">Embedded high-risk .xyz URL</div>
+            </div>
+          </div>
+          <div style="margin-top: 10px; text-align: center;">
+            <div style="font-size: 0.85rem; font-weight: 700; color: var(--danger); margin-bottom: 12px;">RESULT: POSSIBLE PHISHING (88/100)</div>
+            <a href="{{ url_for('email_view') }}" class="btn btn-accent btn-sm" style="width: 100%;">
+              Analyze an Email
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 8 — AWARENESS CENTER
+     ========================================================================== -->
+<section class="section section-muted" id="awareness">
+  <div class="container">
+    <div class="text-center">
+      <div class="section-tag mx-auto">Cybersecurity Curriculum</div>
+      <h2 class="section-title">Cybersecurity Awareness Center</h2>
+      <p class="section-subtitle mx-auto">
+        Knowledge is your most reliable firewall. Explore key threat categories and build proactive defensive instincts.
+      </p>
+    </div>
+
+    <div class="awareness-grid">
+      <!-- 1: What is Phishing -->
+      <div class="awareness-card" onclick="openAwarenessModal('what_is_phishing')" role="button" tabindex="0">
+        <div class="awareness-card-top-row">
+          <span class="awareness-topic-badge">Module 01 • Fundamentals</span>
+          <div class="awareness-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+        </div>
+        <h4 class="awareness-card-title">What is Phishing?</h4>
+        <p class="awareness-card-desc">Understanding deceptive social engineering mechanisms and how attackers manipulate trust.</p>
+        <div class="awareness-card-action">
+          <span>Explore Interactive Module</span> &rarr;
+        </div>
+      </div>
+
+      <!-- 2: Email Phishing -->
+      <div class="awareness-card" onclick="openAwarenessModal('email_phishing')" role="button" tabindex="0">
+        <div class="awareness-card-top-row">
+          <span class="awareness-topic-badge">Module 02 • Email Vectors</span>
+          <div class="awareness-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+        </div>
+        <h4 class="awareness-card-title">Email Phishing &amp; BEC</h4>
+        <p class="awareness-card-desc">Identifying forged headers, executive impersonation (BEC), and fake invoice traps.</p>
+        <div class="awareness-card-action">
+          <span>Explore Interactive Module</span> &rarr;
+        </div>
+      </div>
+
+      <!-- 3: Smishing & Vishing -->
+      <div class="awareness-card" onclick="openAwarenessModal('smishing_vishing')" role="button" tabindex="0">
+        <div class="awareness-card-top-row">
+          <span class="awareness-topic-badge">Module 03 • Mobile Threats</span>
+          <div class="awareness-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          </div>
+        </div>
+        <h4 class="awareness-card-title">Smishing &amp; Vishing</h4>
+        <p class="awareness-card-desc">Recognizing fraudulent SMS delivery notifications and deceptive voice support calls.</p>
+        <div class="awareness-card-action">
+          <span>Explore Interactive Module</span> &rarr;
+        </div>
+      </div>
+
+      <!-- 4: Social Engineering -->
+      <div class="awareness-card" onclick="openAwarenessModal('social_engineering')" role="button" tabindex="0">
+        <div class="awareness-card-top-row">
+          <span class="awareness-topic-badge">Module 04 • Psychology</span>
+          <div class="awareness-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          </div>
+        </div>
+        <h4 class="awareness-card-title">Social Engineering</h4>
+        <p class="awareness-card-desc">Mastering defense against pretexting, authority pressure, fear tactics, and baiting.</p>
+        <div class="awareness-card-action">
+          <span>Explore Interactive Module</span> &rarr;
+        </div>
+      </div>
+
+      <!-- 5: Fake Websites -->
+      <div class="awareness-card" onclick="openAwarenessModal('fake_websites')" role="button" tabindex="0">
+        <div class="awareness-card-top-row">
+          <span class="awareness-topic-badge">Module 05 • Domain Spoofing</span>
+          <div class="awareness-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </div>
+        </div>
+        <h4 class="awareness-card-title">Fake Websites</h4>
+        <p class="awareness-card-desc">Spotting typosquatting lookalike domains, homograph attacks, and cloned login portals.</p>
+        <div class="awareness-card-action">
+          <span>Explore Interactive Module</span> &rarr;
+        </div>
+      </div>
+
+      <!-- 6: Password Safety -->
+      <div class="awareness-card" onclick="openAwarenessModal('password_safety')" role="button" tabindex="0">
+        <div class="awareness-card-top-row">
+          <span class="awareness-topic-badge">Module 06 • Credentials</span>
+          <div class="awareness-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+        </div>
+        <h4 class="awareness-card-title">Password Safety</h4>
+        <p class="awareness-card-desc">Designing unbreakable passphrases, utilizing password vaults, and eliminating reuse.</p>
+        <div class="awareness-card-action">
+          <span>Explore Interactive Module</span> &rarr;
+        </div>
+      </div>
+
+      <!-- 7: MFA -->
+      <div class="awareness-card" onclick="openAwarenessModal('mfa_security')" role="button" tabindex="0">
+        <div class="awareness-card-top-row">
+          <span class="awareness-topic-badge">Module 07 • Authentication</span>
+          <div class="awareness-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          </div>
+        </div>
+        <h4 class="awareness-card-title">Multi-Factor Auth (MFA)</h4>
+        <p class="awareness-card-desc">Deploying hardware keys and authenticator apps, plus neutralizing MFA fatigue bombing.</p>
+        <div class="awareness-card-action">
+          <span>Explore Interactive Module</span> &rarr;
+        </div>
+      </div>
+
+      <!-- 8: Safe Browsing -->
+      <div class="awareness-card" onclick="openAwarenessModal('safe_browsing')" role="button" tabindex="0">
+        <div class="awareness-card-top-row">
+          <span class="awareness-topic-badge">Module 08 • Web Hygiene</span>
+          <div class="awareness-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="12 8 8 12 12 16 16 12 12 8"></polygon></svg>
+          </div>
+        </div>
+        <h4 class="awareness-card-title">Safe Browsing</h4>
+        <p class="awareness-card-desc">Inspecting file extensions (.pdf.exe), validating SSL certificates, and sandboxing downloads.</p>
+        <div class="awareness-card-action">
+          <span>Explore Interactive Module</span> &rarr;
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="{{ url_for('awareness_view') }}" class="btn btn-primary btn-lg">
+        Explore Cybersecurity Awareness Curriculum &rarr;
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Interactive Awareness Learning Modal Dialog -->
+<div class="awareness-modal-overlay" id="awarenessModalOverlay" role="dialog" aria-modal="true">
+  <div class="awareness-modal-card">
+    <div class="awareness-modal-header">
+      <div>
+        <span class="section-tag" id="modalTag">CYBERSECURITY CURRICULUM</span>
+        <h3 id="modalTitle">Module Title</h3>
+      </div>
+      <button type="button" class="awareness-modal-close-btn" id="modalCloseBtn" aria-label="Close dialog">&times;</button>
+    </div>
+
+    <div class="awareness-modal-body">
+      <p id="modalOverview" style="font-size: 1rem; color: var(--text-muted); line-height: 1.6;"></p>
+
+      <!-- Simulated Scenario -->
+      <div class="modal-scenario-card">
+        <h5 id="modalScenarioTitle">Simulated Attack Scenario</h5>
+        <p id="modalScenarioText"></p>
+      </div>
+
+      <!-- Critical Red Flags -->
+      <div>
+        <h4 class="modal-section-title">
+          <span style="color: #EF4444;">⚠</span> Critical Red Flags &amp; Indicators:
+        </h4>
+        <ul class="modal-checklist red-flags" id="modalRedFlagsList"></ul>
+      </div>
+
+      <!-- Defensive Action Steps -->
+      <div>
+        <h4 class="modal-section-title">
+          <span style="color: #10B981;">✓</span> Defensive Countermeasures:
+        </h4>
+        <ul class="modal-checklist defense-steps" id="modalDefenseList"></ul>
+      </div>
+    </div>
+
+    <div class="awareness-modal-footer">
+      <div style="font-size: 0.85rem; color: var(--text-muted);">
+        Interactive Awareness Module • PhishGuard Certified
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <a href="{{ url_for('quiz_view') }}" class="btn btn-accent btn-sm">
+          Test in Cyber Quiz &rarr;
+        </a>
+        <a href="{{ url_for('awareness_view') }}" class="btn btn-outline btn-sm">
+          Full Awareness Hub
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 9 — INTERACTIVE QUIZ PROMOTION
+     ========================================================================== -->
+<section class="section" id="quiz-promo">
+  <div class="container">
+    <div class="quiz-promo-box">
+      <div>
+        <div class="section-tag section-tag-dark">Knowledge Assessment</div>
+        <h2 style="font-size: 2.6rem; font-weight: 800; line-height: 1.15; margin-bottom: 16px;">
+          How phishing-aware are you?
+        </h2>
+        <p style="font-size: 1.1rem; color: #CBD5E1; max-width: 540px; line-height: 1.6;">
+          Test your knowledge and learn how to recognize common phishing attempts across 10 realistic threat scenarios.
+        </p>
+
+        <div class="quiz-features-pills">
+          <div class="quiz-feat-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+            10 Scenario Questions
+          </div>
+          <div class="quiz-feat-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Instant Feedback &amp; Explanations
+          </div>
+          <div class="quiz-feat-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            Accreditation Certificate
+          </div>
+        </div>
+
+        <a href="{{ url_for('quiz_view') }}" class="btn btn-accent btn-lg">
+          Take the Quiz Now
+        </a>
+      </div>
+
+      <div class="quiz-badge-graphic">
+        <div class="shield-quiz-art">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M9 12l2 2 4-4"/>
+          </svg>
+        </div>
+        <h4 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 8px;">PhishGuard Certified</h4>
+        <p style="font-size: 0.88rem; color: #94A3B8;">Earn your printable Certificate of Cybersecurity Awareness upon passing.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 10 — STATISTICS (System/Project Metrics)
+     ========================================================================== -->
+<section class="section section-muted">
+  <div class="container text-center">
+    <div class="section-tag mx-auto">System Telemetry</div>
+    <h2 class="section-title">Platform Capabilities Overview</h2>
+    <p class="section-subtitle mx-auto">
+      Core analytical components engineered into the PhishGuard detection architecture.
+    </p>
+
+    <div class="stats-grid">
+      <div class="stat-item-card">
+        <div class="stat-metric">5</div>
+        <div class="stat-label">Detection Modules</div>
+        <div class="stat-desc">Lexical, Protocol, Typosquatting, Sentiment, and Body Extractor</div>
+      </div>
+      <div class="stat-item-card">
+        <div class="stat-metric">10+</div>
+        <div class="stat-label">Awareness Topics</div>
+        <div class="stat-desc">Comprehensive curriculum covering modern attack vectors</div>
+      </div>
+      <div class="stat-item-card">
+        <div class="stat-metric">10</div>
+        <div class="stat-label">Quiz Scenarios</div>
+        <div class="stat-desc">Realistic threat assessments with instant feedback logic</div>
+      </div>
+      <div class="stat-item-card">
+        <div class="stat-metric">100%</div>
+        <div class="stat-label">Explainable Results</div>
+        <div class="stat-desc">Zero black-box decisions; every indicator documented</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     SECTION 11 — FINAL CTA
+     ========================================================================== -->
+<section class="final-cta-section">
+  <div class="container container-narrow text-center">
+    <div class="section-tag section-tag-dark mx-auto">Ready to Strengthen Your Security?</div>
+    <h2 style="font-size: 3.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 18px;">
+      Stay Alert.<br>Stay Secure.
+    </h2>
+    <p style="font-size: 1.2rem; color: #94A3B8; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+      Learn how phishing attacks operate, analyze suspicious indicators before clicking, and build resilient digital defense habits today.
+    </p>
+
+    <div class="cta-buttons-wrap">
+      <a href="{{ url_for('scanner_view') }}" class="btn btn-accent btn-lg">
+        Scan a URL
+      </a>
+      <a href="{{ url_for('awareness_view') }}" class="btn btn-outline-white btn-lg">
+        Learn More
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+{% endblock %}

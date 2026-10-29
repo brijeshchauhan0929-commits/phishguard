@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Inspection Result: {{ result.hostname }} - PHISHGUARD{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 50px; padding-bottom: 80px;">
+  <div class="container container-narrow">
+
+    <!-- Top Action Breadcrumb -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; flex-wrap: wrap; gap: 12px;">
+      <a href="{{ url_for('scanner_view') }}" class="btn btn-outline btn-sm">
+        &larr; Scan Another URL
+      </a>
+      <div style="font-size: 0.85rem; color: var(--text-muted); word-break: break-all;">
+        Inspected Target: <span style="font-family: var(--font-mono); font-weight: 600; color: var(--primary);">{{ result.hostname }}</span>
+      </div>
+    </div>
+
+    <!-- Main Results Hero Card -->
+    <div class="checks-card" style="padding: 40px; text-align: center;">
+      <div class="section-tag mx-auto">Heuristic Analysis Report</div>
+      
+      <!-- Target URL Display -->
+      <div style="background: var(--bg-light); border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 14px 20px; margin: 20px auto 32px auto; max-width: 680px; overflow-x: auto;">
+        <span style="font-family: var(--font-mono); font-size: 0.95rem; color: var(--text-main); word-break: break-all;">
+          {{ result.url }}
+        </span>
+      </div>
+
+      <!-- Circular Radial Risk Gauge -->
+      <div class="risk-meter-wrapper">
+        <svg viewBox="0 0 36 36" class="circular-chart">
+          <path class="circle-bg"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+          <path class="circle-arc"
+            stroke-dasharray="0, 100"
+            d="M18 2.0845
+              a 15.9155 15.9155 0 0 1 0 31.831
+              a 15.9155 15.9155 0 0 1 0 -31.831"
+          />
+        </svg>
+        <div class="risk-meter-inner">
+          <div class="gauge-score-value" id="gaugeScore" data-score="{{ result.risk_score }}">
+            {{ result.risk_score }}
+          </div>
+          <div class="gauge-score-max">/ 100</div>
+          <div class="gauge-level-badge">
+            <span class="badge badge-{{ result.risk_badge }}">
+              {{ result.risk_level }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <p style="margin-top: 24px; font-size: 1.05rem; color: var(--text-muted); max-width: 580px; margin-left: auto; margin-right: auto;">
+        Evaluation completed across 14 security heuristics.
+        <strong>{{ result.passed_count }} passed checks</strong> and <strong>{{ result.concern_count }} flagged concerns</strong>.
+      </p>
+    </div>
+
+    <!-- Security Checks & Potential Concerns Two-Column Grid -->
+    <div class="checks-grid-two-column">
+      <!-- Left Column: Security Checks Passed -->
+      <div class="checks-card">
+        <div class="checks-card-header">
+          <div class="checks-card-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            Security Checks Passed
+          </div>
+          <span class="badge badge-success">{{ result.passed_count }} Verified</span>
+        </div>
+
+        {% if result.passed_checks %}
+          {% for check in result.passed_checks %}
+            <div class="check-item-row passed">
+              <div class="check-icon-circle pass">
+                ✓
+              </div>
+              <div class="check-details">
+                <div class="check-name">{{ check.name }}</div>
+                <div class="check-description">{{ check.description }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <p style="color: var(--text-muted); font-size: 0.9rem;">No standard security checks were satisfied by this endpoint.</p>
+        {% endif %}
+      </div>
+
+      <!-- Right Column: Potential Concerns -->
+      <div class="checks-card">
+        <div class="checks-card-header">
+          <div class="checks-card-title">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#EF4444" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            Potential Concerns
+          </div>
+          <span class="badge badge-{{ result.risk_badge }}">{{ result.concern_count }} Flagged</span>
+        </div>
+
+        {% if result.potential_concerns %}
+          {% for concern in result.potential_concerns %}
+            <div class="check-item-row {% if concern.status == 'danger' %}concern{% else %}warning{% endif %}">
+              <div class="check-icon-circle {% if concern.status == 'danger' %}danger{% else %}warn{% endif %}">
+                ⚠
+              </div>
+              <div class="check-details">
+                <div class="check-name">{{ concern.name }}</div>
+                <div class="check-description">{{ concern.description }}</div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div style="padding: 24px; text-align: center; color: var(--success); font-weight: 600;">
+            ✓ No suspicious anomalies or threat patterns detected in this URL.
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Section: Why was this result generated? Expandable Accordion -->
+    <div class="accordion-wrapper">
+      <div class="accordion-title-bar">
+        <h3>Why was this result generated?</h3>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Click any indicator to inspect underlying rationale</span>
+      </div>
+
+      {% for ind in result.indicators %}
+        <div class="accordion-item {% if ind.status in ['danger', 'warning'] %}active{% endif %}">
+          <div class="accordion-header">
+            <div class="accordion-header-left">
+              <span class="badge badge-{{ ind.status if ind.status != 'pass' else 'success' }}">
+                {{ ind.status|upper }}
+              </span>
+              <span class="indicator-title-text">{{ ind.name }}</span>
+            </div>
+            <svg class="accordion-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="accordion-content">
+            <p>{{ ind.description }}</p>
+            {% if ind.rationale %}
+              <div class="rationale-callout">
+                <strong>Security Rationale:</strong> {{ ind.rationale }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <!-- Safety Recommendation Card -->
+    <div class="recommendation-card {{ result.risk_badge }}">
+      <div class="recommendation-icon">
+        {% if result.risk_badge == 'danger' %}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        {% elif result.risk_badge == 'warning' %}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+        {% else %}
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        {% endif %}
+      </div>
+      <div class="recommendation-content">
+        <h4>Safety Recommendation</h4>
+        <p>{{ result.recommendation }}</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/scanner.js') }}"></script>
+{% endblock %}

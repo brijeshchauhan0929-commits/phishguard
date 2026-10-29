@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Security Audit Reports - PHISHGUARD{% endblock %}
+
+{% block content %}
+<section class="section" style="padding-top: 50px; padding-bottom: 80px;">
+  <div class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <div class="section-tag">Audit Telemetry</div>
+        <h1 style="font-size: 2.2rem; font-weight: 800; color: var(--primary);">Security Inspection Reports</h1>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Review comprehensive logs of all URL and email phishing evaluations.</p>
+      </div>
+
+      <div style="display: flex; gap: 12px;">
+        <button class="btn btn-outline btn-sm" onclick="window.print()">
+          Print Report
+        </button>
+        <a href="{{ url_for('export_reports_csv') }}" class="btn btn-accent btn-sm">
+          Export CSV Telemetry
+        </a>
+      </div>
+    </div>
+
+    <!-- Filter Pills & Search Bar -->
+    <div style="background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: 18px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="{{ url_for('reports_view') }}" class="quick-chip {% if not current_filter %}active" style="background: var(--primary); color: #fff; border-color: var(--primary);{% endif %}">
+          All Scans ({{ all_count }})
+        </a>
+        <a href="{{ url_for('reports_view', filter='safe') }}" class="quick-chip {% if current_filter == 'safe' %}active" style="background: var(--success); color: #fff; border-color: var(--success);{% endif %}">
+          Safe ({{ safe_count }})
+        </a>
+        <a href="{{ url_for('reports_view', filter='suspicious') }}" class="quick-chip {% if current_filter == 'suspicious' %}active" style="background: var(--warning); color: #fff; border-color: var(--warning);{% endif %}">
+          Suspicious ({{ suspicious_count }})
+        </a>
+        <a href="{{ url_for('reports_view', filter='danger') }}" class="quick-chip {% if current_filter == 'danger' %}active" style="background: var(--danger); color: #fff; border-color: var(--danger);{% endif %}">
+          High Risk / Phishing ({{ danger_count }})
+        </a>
+      </div>
+
+      <form action="{{ url_for('reports_view') }}" method="GET" style="display: flex; gap: 8px;">
+        <input type="text" name="q" value="{{ search_query or '' }}" placeholder="Search domain or keyword..."
+               style="padding: 8px 14px; border: 1px solid var(--border-light); border-radius: var(--radius-full); font-size: 0.88rem; outline: none; width: 220px;">
+        <button type="submit" class="btn btn-primary btn-sm">Search</button>
+      </form>
+    </div>
+
+    <!-- Reports Table Card -->
+    <div class="activity-card" style="padding: 24px;">
+      <div class="data-table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Vector</th>
+              <th>Target Identifier</th>
+              <th>Risk Score</th>
+              <th>Status Tier</th>
+              <th>Flagged Checks</th>
+              <th>Timestamp</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if logs %}
+              {% for log in logs %}
+                <tr>
+                  <td style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--text-muted);">
+                    #{{ log.id }}
+                  </td>
+                  <td>
+                    <span class="badge {% if log.type == 'URL' %}badge-info{% else %}badge-neutral{% endif %}">
+                      {{ log.type }}
+                    </span>
+                  </td>
+                  <td>
+                    <span class="table-target-url" title="{{ log.target }}">
+                      {{ log.target }}
+                    </span>
+                  </td>
+                  <td>
+                    <strong style="color: {% if log.risk_score >= 70 %}var(--danger){% elif log.risk_score >= 35 %}var(--warning){% else %}var(--success){% endif %};">
+                      {{ log.risk_score }} / 100
+                    </strong>
+                  </td>
+                  <td>
+                    <span class="badge {% if log.risk_level == 'LOW RISK' %}badge-success{% elif log.risk_level == 'SUSPICIOUS' %}badge-warning{% else %}badge-danger{% endif %}">
+                      {{ log.risk_level }}
+                    </span>
+                  </td>
+                  <td style="font-size: 0.85rem;">
+                    {{ log.concern_count }} concerns flagged
+                  </td>
+                  <td style="color: var(--text-muted); font-size: 0.85rem;">
+                    {{ log.created_at }}
+                  </td>
+                  <td>
+                    {% if log.type == 'URL' %}
+                      <a href="{{ url_for('scanner_view', url=log.target) }}" class="btn btn-outline btn-sm" style="padding: 4px 10px; font-size: 0.78rem;">
+                        Inspect
+                      </a>
+                    {% else %}
+                      <span style="font-size: 0.78rem; color: var(--text-muted);">Logged</span>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            {% else %}
+              <tr>
+                <td colspan="8" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                  No telemetry records match your current filter or query criteria.
+                </td>
+              </tr>
+            {% endif %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}
