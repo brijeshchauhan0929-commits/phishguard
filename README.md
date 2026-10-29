@@ -2,6 +2,15 @@
 ### Phishing Attack Detection & Awareness System
 **College Mini Project**
 
+[![Live Web Application](https://img.shields.io/badge/🌐_Live_Website-phishguard--oo9k.onrender.com-0284C7?style=for-the-badge&logo=render)](https://phishguard-oo9k.onrender.com)
+[![Academic Project Report](https://img.shields.io/badge/📄_Official_Report_(PDF)-View_Documentation-10B981?style=for-the-badge)](https://phishguard-oo9k.onrender.com/project-report)
+[![Python 3.13](https://img.shields.io/badge/Python-3.13-blue.svg?style=flat-square&logo=python)](https://python.org)
+[![Flask](https://img.shields.io/badge/Framework-Flask_3.1-black.svg?style=flat-square&logo=flask)](https://flask.palletsprojects.com)
+[![PyTest](https://img.shields.io/badge/Tests-14%2F14_Passed-success.svg?style=flat-square&logo=pytest)](https://pytest.org)
+
+> 🚀 **Live Production URL:** [https://phishguard-oo9k.onrender.com](https://phishguard-oo9k.onrender.com)  
+> 📄 **Official Academic Documentation (PDF):** [https://phishguard-oo9k.onrender.com/project-report](https://phishguard-oo9k.onrender.com/project-report)
+
 ---
 
 ### Project Attribution
